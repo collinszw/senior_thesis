@@ -56,23 +56,6 @@
 PrimaryGeneratorAction::PrimaryGeneratorAction(const std::string& config_file_name)
   : G4VUserPrimaryGeneratorAction(),marley_generator_(nullptr) //fParticleGun(0)
 {
-
-//Old geant primary particle initialization
-/*
-  G4int n_particle = 1;
-  fParticleGun  = new G4ParticleGun(n_particle);
-
-  //open a HEPevt file, read out an electron, generate a primary //this needs more checks in the future
-  fileName = "dar_events.dat";
-  inputFile.open(fileName,std::fstream::in);
-
-  if(!inputFile){ //if it's really failed to open the file
-    G4Exception("G4HEPEvtInterface::G4HEPEvtInterface","Event0201",FatalException,
-		"G4HEPEvtInterface:: cannot open file.");
-  }
-
-*/
-
   //these are all initial energy spectrums, by event
 
   neut_file.close();
@@ -120,37 +103,6 @@ PrimaryGeneratorAction::~PrimaryGeneratorAction()
 
 void PrimaryGeneratorAction::GeneratePrimaries(G4Event* anEvent)
 {
-  /* old way
-  G4int NHEP;  // number of entries
-  inputFile >> NHEP;
-
-  for( G4int IHEP=0; IHEP<NHEP; IHEP++ ){
-    G4int ISTHEP;   // status code
-    G4int IDHEP;    // PDG code
-    G4int JDAHEP1;  // first daughter
-    G4int JDAHEP2;  // last daughter
-    G4double PHEP1; // px in GeV
-    G4double PHEP2; // py in GeV
-    G4double PHEP3; // pz in GeV
-    G4double PHEP5; // mass in GeV
-      
-    inputFile >> ISTHEP >> IDHEP >> JDAHEP1 >> JDAHEP2
-	      >> PHEP1 >> PHEP2 >> PHEP3 >> PHEP5;
-  
-    //should probably be a better check
-    if(ISTHEP == 1 && IDHEP == 2112){ //if a neutron
-
-      G4ParticleTable* particleTable = G4ParticleTable::GetParticleTable();
-      G4ParticleDefinition* particle = particleTable->FindParticle(IDHEP);
-
-      fParticleGun->SetParticleDefinition(particle);
-
-      //fParticleGun->SetParticleMass( PHEP5*GeV ); //mass is probably set in Definition
-      fParticleGun->SetParticleEnergy(sqrt(pow(PHEP1*GeV,2) + pow(PHEP2*GeV,2) + pow(PHEP3*GeV,2)));
-      fParticleGun->SetParticleMomentumDirection(G4ThreeVector(PHEP1*GeV,PHEP2*GeV,PHEP3*GeV));
-    }
-  }
-  */
   //generate a random position within the target
 
   G4int fid_rad = 50;

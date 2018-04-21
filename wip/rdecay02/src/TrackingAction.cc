@@ -176,19 +176,7 @@ void TrackingAction::PostUserTrackingAction(const G4Track* track)
     }
     
   }*/
-  
 
-
-  //G4double electron_e = 0;
-  //G4double neutron_e = 0;
-  //G4double photon_e = 0;
-  
-
-  
-  //analysisManager->FillH1(0, total_e);
-  
-  //G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
-  //analysisManager->FillH1(0, energy);
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......

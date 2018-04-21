@@ -255,10 +255,7 @@ void Run::EndOfRun()
 
   // run condition
   //
-  //G4String Particle = fParticle->GetParticleName();
-  //G4cout << "\n The run is " << numberOfEvent << " "<< Particle << " of "
-  //       << G4BestUnit(fEkin,"Energy") << " through : ";
-
+  
   G4cout << "\n Target   : Length = "
          << G4BestUnit(fDetector->GetTargetLength(),"Length")
          << " Radius    = "

@@ -186,8 +186,6 @@ void EventAction::EndOfEventAction(const G4Event* Event)
 
  }
 
-
- 
  
  ar_out_file<<total_e_ar<<"\n"; //energy spectrum of the neutrino
  ar_electron_file<<electron_e_ar<<"\n"; //energy spectrum of the electron

@@ -91,10 +91,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
 void DetectorConstruction::DefineMaterials()
 {
   // build materials
-  //
-  //fDetectorMater = new G4Material("Germanium", 32, 72.61*g/mole, 5.323*g/cm3);
-  
-
+ 
   G4Element* N  = new G4Element("Nitrogen", "N", 7, 14.01*g/mole);
   G4Element* O  = new G4Element("Oxygen",   "O", 8, 16.00*g/mole);
   //
@@ -128,17 +125,11 @@ void DetectorConstruction::DefineMaterials()
   Polystyrene_Gd->AddMaterial(Polystyrene, fractionmass=.97);
   Polystyrene_Gd->AddElement(Gd, fractionmass=.03);
     
-  //
+
   fWorldMater = Air20;
   fDetectorMater = Air20;//Polystyrene_Gd; //needs to be  polystyrene + Gd
   fTargetMater = lAr;  
 
-  // or use G4 materials data base
-  //
-  //G4NistManager* man = G4NistManager::Instance();
-  //fTargetMater = man->FindOrBuildMaterial("G4_liquidArgon");
-                   
-  ///G4cout << *(G4Material::GetMaterialTable()) << G4endl;
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
