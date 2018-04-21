@@ -1,0 +1,11 @@
+Steps to generate a root file that had a specific particle
+
+1) Edit the name of H10 in HistoManager
+
+2) Edit PrimaryGeneratorAction.cc 
+   -Change fid_rad,fid_len to pick a fiducial volume
+   -Change particle_to_check to pick the specific particle to be plotted
+
+3) If you're looking for total kinetic energy, edit ActionManager.cc
+   -Comment out TrackingAction
+   -uncomment the lines right after RunAction
