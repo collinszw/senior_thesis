@@ -1,19 +1,20 @@
 {
   gROOT->Reset();
   
-  TCanvas *c1 = new TCanvas();
-  TCanvas *c2 = new TCanvas();
-  TCanvas *c3 = new TCanvas();
-  TCanvas *c4 = new TCanvas();
-  TCanvas *c5 = new TCanvas();
-  TCanvas *c6 = new TCanvas();
-  TCanvas *c7 = new TCanvas();
+  //TCanvas *c1 = new TCanvas();
+  //TCanvas *c2 = new TCanvas();
+  //TCanvas *c3 = new TCanvas();
+  //TCanvas *c4 = new TCanvas();
+  //TCanvas *c5 = new TCanvas();
+  //TCanvas *c6 = new TCanvas();
+  //TCanvas *c7 = new TCanvas();
   TCanvas *c8 = new TCanvas();
-  TCanvas *c9 = new TCanvas();
+  //TCanvas *c9 = new TCanvas();
   //TCanvas *c10 = new TCanvas();
   //TCanvas *c11 = new TCanvas();
   //TCanvas *c12 = new TCanvas();
-      
+
+  /*
   TFile *MyFile1 = new TFile("e_orig.root","OLD");
   TFile *MyFile2 = new TFile("e_rand.root","OLD");
   TFile *MyFile3 = new TFile("e_rand_5.root","OLD");
@@ -114,7 +115,7 @@
     lines = 0;
 
     //new format
-    /*
+    *//*
     if(k == 0){
       in.open("electron_energy_spectrum",std::fstream::in);
       out.open("electron_energy_spectrum",std::fstream::in);
@@ -137,7 +138,7 @@
       x_range = n;
     }
 
-    */
+      *//*
     
      //old format 
     if(k==0){
@@ -327,12 +328,15 @@
   //std::cout<<y_mean_error<<"\n";
   loss_dist->Draw();
 
+	*/
+
   //neutrino energies vs total recovered energy
   
   
   ifstream neut;
   neut.open("neutrino_energy_spectrum.txt",std::fstream::in);
 
+  ifstream out;
   out.open("recovered_ar_energy_spectrum.txt",std::fstream::in);
   ifstream electron;
   electron.open("electron_ar_energy_spectrum.txt",std::fstream::in);
