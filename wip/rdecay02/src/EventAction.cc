@@ -48,6 +48,7 @@ std::ofstream ar_electron_file;
 std::ofstream ar_neutron_file;
 std::ofstream ar_proton_file;
 std::ofstream ar_photon_file;
+std::ofstream ar_ind_photon_file;
 
 std::ofstream ar_extra_file;
 
@@ -56,7 +57,7 @@ std::ofstream gd_electron_file;
 std::ofstream gd_neutron_file;
 std::ofstream gd_proton_file;
 std::ofstream gd_photon_file;
-
+std::ofstream gd_ind_photon_file;
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 EventAction::EventAction()
@@ -69,6 +70,7 @@ EventAction::EventAction()
   ar_neutron_file.open ("neutron_ar_energy_spectrum.txt");
   ar_proton_file.open ("proton_ar_energy_spectrum.txt");
   ar_photon_file.open ("photon_ar_energy_spectrum.txt");
+  ar_ind_photon_file.open ("individual_photon_ar_energy_spectrum.txt");
 
   ar_extra_file.open ("extra_ar_energy_spectrum.txt");
   
@@ -77,14 +79,12 @@ EventAction::EventAction()
   gd_neutron_file.open ("neutron_gd_energy_spectrum.txt");
   gd_proton_file.open ("proton_gd_energy_spectrum.txt");
   gd_photon_file.open ("photon_gd_energy_spectrum.txt");
-
+  gd_ind_photon_file.open ("individual_photon_gd_energy_spectrum.txt");
+ 
   //leaving this for posterity
   //std::ofstream blorfile;
   //blorfile.open("BLOOOORRRR.txt");
   //ar_out_file<<"WHATDAFUQQ\n";
-
- 
- 
 } 
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
@@ -106,6 +106,7 @@ void EventAction::BeginOfEventAction(const G4Event*)
   neutron_e_ar = 0;
   proton_e_ar = 0;
   photon_e_ar = 0;
+  ind_photon_e_ar = 0;
 
   extra_e_ar = 0;
   
@@ -113,13 +114,14 @@ void EventAction::BeginOfEventAction(const G4Event*)
   electron_e_gd = 0;
   neutron_e_gd = 0;
   proton_e_gd = 0;
-  photon_e_gd = 0; 
+  photon_e_gd = 0;
+  ind_photon_e_gd = 0; 
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 void EventAction::AddEdep(G4int iVol, G4double edep,
-			  G4double time, G4double weight, G4int PDG)
+			  G4double time, G4double weight, G4int PDG, G4int parent)
 {
   // initialize t0
   if (fTime0 < 0.) fTime0 = time;
@@ -142,7 +144,12 @@ void EventAction::AddEdep(G4int iVol, G4double edep,
       total_e_ar+=edep;
     }else if (PDG == 22){ //photon
       photon_e_ar+=edep;
+      ind_photon_e_ar+=edep;
       total_e_ar+=edep;
+      if(parent){ //new photon
+	ar_ind_photon_file<<ind_photon_e_ar<<"\n"; //energy spectrum of the photon
+	ind_photon_e_ar = 0;
+      }
     }
   }
   if (iVol == 2) {
@@ -150,16 +157,21 @@ void EventAction::AddEdep(G4int iVol, G4double edep,
     fWeight2 += edep*weight;
     if (PDG == 11){ //electron
       electron_e_gd+=edep;
-      total_e_ar+=edep;
+      total_e_gd+=edep;
     }else if (PDG == 2112){ //neutron
       neutron_e_gd+=edep;
-      total_e_ar+=edep;
+      total_e_gd+=edep;
     }else if (PDG == 2212){ //proton
       proton_e_gd+=edep;
-      total_e_ar+=edep;
+      total_e_gd+=edep;
     }else if (PDG == 22){ //photon
       photon_e_gd+=edep;
-      total_e_ar+=edep;
+      ind_photon_e_gd+=edep;
+      total_e_gd+=edep;
+      if(parent){ //new photon
+	ar_ind_photon_file<<ind_photon_e_gd<<"\n"; //energy spectrum of the photon
+	ind_photon_e_gd = 0;
+      }
     }
   }  
 }
@@ -211,6 +223,7 @@ void EventAction::EndOfEventAction(const G4Event* Event)
   ar_neutron_file<<neutron_e_ar<<"\n"; //energy spectrum of the neutron
   ar_proton_file<<proton_e_ar<<"\n"; //energy spectrum of the proton
   ar_photon_file<<photon_e_ar<<"\n"; //energy spectrum of the photon
+  ar_ind_photon_file<<"\n"; //energy spectrum of the photon
 
   ar_extra_file<<extra_e_ar<<"\n";
  
@@ -219,7 +232,8 @@ void EventAction::EndOfEventAction(const G4Event* Event)
   gd_neutron_file<<neutron_e_gd<<"\n"; //energy spectrum of the neutron
   gd_proton_file<<proton_e_gd<<"\n"; //energy spectrum of the proton
   gd_photon_file<<photon_e_gd<<"\n"; //energy spectrum of the photon
- 
+  ar_ind_photon_file<<"\n"; //energy spectrum of the photon
+  
   // total
   //
   analysisManager->FillH1(2, Etot, Wtot);
