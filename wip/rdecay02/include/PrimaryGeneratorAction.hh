@@ -94,6 +94,7 @@ private:
   G4double neutron_e;
   G4double proton_e;
   G4double photon_e;
+  G4double ind_photon_e;
   
   G4double n_count;
   

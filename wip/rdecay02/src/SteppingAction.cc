@@ -47,11 +47,13 @@
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 SteppingAction::SteppingAction(DetectorConstruction* det, EventAction* event)
-: G4UserSteppingAction(), fDetector(det), fEventAction(event)
+  : G4UserSteppingAction(), fDetector(det), fEventAction(event)
 {
 
   fEdep1 = fWeight1 = 0;
-  
+
+  Parent_ID = -1;
+  PDG_ID = -1;
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
@@ -64,14 +66,14 @@ SteppingAction::~SteppingAction()
 void SteppingAction::UserSteppingAction(const G4Step* aStep)
 {
   Run* run = static_cast<Run*>(
-        G4RunManager::GetRunManager()->GetNonConstCurrentRun());    
+			       G4RunManager::GetRunManager()->GetNonConstCurrentRun());    
   
   G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
 
   //which volume ?
   //
   G4LogicalVolume* lVolume = aStep->GetPreStepPoint()->GetTouchableHandle()
-                             ->GetVolume()->GetLogicalVolume();
+    ->GetVolume()->GetLogicalVolume();
   G4int iVol = 0;
   if (lVolume == fDetector->GetLogicTarget())   iVol = 1;
   if (lVolume == fDetector->GetLogicDetector()) iVol = 2;
@@ -82,28 +84,34 @@ void SteppingAction::UserSteppingAction(const G4Step* aStep)
   const G4VProcess* process   = endPoint->GetProcessDefinedStep();
   run->CountProcesses(process, iVol);
 
+  New_parent = 0;
   
   // particle being stepped
   //
-  G4int PDG_id = aStep->GetTrack()->GetParticleDefinition()->GetPDGEncoding();
+  // only change PDG_id if the we are talking about a new ParentID
+  Parent_ID = aStep->GetTrack()->GetParentID();
 
+  if(Parent_ID == 0){
+    PDG_ID = aStep->GetTrack()->GetParticleDefinition()->GetPDGEncoding();
+    New_parent = 1;
+  }
   
   // energy deposit
   //
   G4double edepStep = aStep->GetTotalEnergyDeposit();
-
-  if(PDG_id == 2112){
+  /*
+    if(PDG_id == 2112){
     std::cout<<"yea, there are neutrons\n";
     if (edepStep > 0){
-      std::cout<<"and they have this energy: " << edepStep << "\n";
+    std::cout<<"and they have this energy: " << edepStep << "\n";
     }
-  }
-  if(PDG_id == 22){
+    }
+    if(PDG_id == 22){
     std::cout<<"yea, there are photons\n";
     if (edepStep > 0){
-      std::cout<<"and they have this energy: " << edepStep << "\n";
+    std::cout<<"and they have this energy: " << edepStep << "\n";
     }
-  }
+    }*/
     
   //if (iVol == 2 && left_target){
     
@@ -117,7 +125,7 @@ void SteppingAction::UserSteppingAction(const G4Step* aStep)
   }
   G4double time   = aStep->GetPreStepPoint()->GetGlobalTime();
   G4double weight = aStep->GetPreStepPoint()->GetWeight();   
-  fEventAction->AddEdep(iVol, edepStep, time, weight, PDG_id);
+  fEventAction->AddEdep(iVol, edepStep, time, weight, PDG_ID, new_parent);
     
   if (iVol == 1) {
     fEdep1 += edepStep;
