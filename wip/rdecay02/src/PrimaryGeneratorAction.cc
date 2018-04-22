@@ -69,9 +69,12 @@ PrimaryGeneratorAction::PrimaryGeneratorAction(const std::string& config_file_na
   n_file.open ("neutron_energy_spectrum.txt");
   p_file.open ("proton_energy_spectrum.txt");
   y_file.open ("photon_energy_spectrum.txt");
+  ind_y_file.open ("individual_photon_energy_spectrum.txt");
 
   n_count_file.open ("neutron_count.txt");
-    //new way
+
+
+  //new way
   fPrimaryParticle = new G4PrimaryParticle();
   
   // Initialize the MARLEY logger
@@ -161,7 +164,9 @@ void PrimaryGeneratorAction::GeneratePrimaries(G4Event* anEvent)
     }else if (fp->pdg_code() == 2212){ //proton
       proton_e += fp->kinetic_energy();
     }else if (fp->pdg_code() == 22){ //photon
-      photon_e += fp->kinetic_energy();
+      ind_photon_e = fp->kinetic_energy();
+      photon_e += ind_photon_e;
+      ind_y_file<<photon_e<<"\n"; //energy spectrum of the photon
     }else{
       //std::cout<<"I DON'T KNOW THIS PARTICLE: "<<fp->pdg_code()<<"\n";
     }
@@ -180,6 +185,7 @@ void PrimaryGeneratorAction::GeneratePrimaries(G4Event* anEvent)
   n_file<<neutron_e<<"\n"; //energy spectrum of the neutron
   p_file<<proton_e<<"\n"; //energy spectrum of the proton
   y_file<<photon_e<<"\n"; //energy spectrum of the photon
+  ind_y_file<<"\n"; //energy spectrum of the photon
   n_count_file<<n_count<<"\n"; //number of neutrons per event
 }
 

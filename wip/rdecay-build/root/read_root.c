@@ -348,7 +348,7 @@
   photon.open("photon_ar_energy_spectrum.txt",std::fstream::in);
 
   ifstream n_count;
-  n_count.open("extra_ar_energy_spectrum.txt",std::fstream::in);
+  n_count.open("neutron_count.txt",std::fstream::in);
 
   TH1F *neut_e_hist = new TH1F("neut_e_hist", "Total energy of the neutrino", 55,0,55);
   TH1F *rec_ar_e_hist = new TH1F("rec_ar_e_hist", "Recovered energy of the neutrino", 55,0,55);

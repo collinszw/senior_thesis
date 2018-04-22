@@ -85,6 +85,7 @@ private:
   std::ofstream n_file;
   std::ofstream p_file;
   std::ofstream y_file;
+  std::ofstream ind_y_file;
 
   std::ofstream n_count_file;
 
