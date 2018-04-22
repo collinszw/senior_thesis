@@ -125,7 +125,7 @@ void SteppingAction::UserSteppingAction(const G4Step* aStep)
   }
   G4double time   = aStep->GetPreStepPoint()->GetGlobalTime();
   G4double weight = aStep->GetPreStepPoint()->GetWeight();   
-  fEventAction->AddEdep(iVol, edepStep, time, weight, PDG_ID, new_parent);
+  fEventAction->AddEdep(iVol, edepStep, time, weight, PDG_ID, New_parent);
     
   if (iVol == 1) {
     fEdep1 += edepStep;

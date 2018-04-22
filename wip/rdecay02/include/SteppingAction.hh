@@ -55,6 +55,10 @@ private:
   G4double fEdep1;
   G4double fWeight1;
   G4int left_target;
+
+  G4int Parent_ID;
+  G4int PDG_ID;
+  G4int New_parent;
   
   DetectorConstruction* fDetector;  
   EventAction* fEventAction;    
