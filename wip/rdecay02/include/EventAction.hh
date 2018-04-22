@@ -63,6 +63,8 @@ private:
   G4double proton_e_ar;
   G4double photon_e_ar;
 
+  G4double extra_e_ar;
+
   G4double total_e_gd;
   G4double electron_e_gd;
   G4double neutron_e_gd;

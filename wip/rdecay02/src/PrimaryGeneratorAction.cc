@@ -136,7 +136,7 @@ void PrimaryGeneratorAction::GeneratePrimaries(G4Event* anEvent)
   G4double neutrino_energy;
   for ( const auto& ip: ev.get_initial_particles() ){
     if (ip->pdg_code() == 12){ //electron neutrino
-      neutrino_energy = ip->kinetic_energy();
+      neutrino_energy = ip->total_energy();
     }
   }
   
@@ -152,13 +152,15 @@ void PrimaryGeneratorAction::GeneratePrimaries(G4Event* anEvent)
   
   for ( const auto& fp : ev.get_final_particles() ) {
     if (fp->pdg_code() == 11){ //electron
-      electron_e += fp->kinetic_energy();;
+      electron_e += fp->kinetic_energy();
     }else if (fp->pdg_code() == 2112){ //neutron
-      neutron_e += fp->kinetic_energy();;
+      neutron_e += fp->kinetic_energy();
     }else if (fp->pdg_code() == 2212){ //proton
-      proton_e += fp->kinetic_energy();;
+      proton_e += fp->kinetic_energy();
     }else if (fp->pdg_code() == 22){ //photon
-      photon_e += fp->kinetic_energy();;
+      photon_e += fp->kinetic_energy();
+    }else{
+      //std::cout<<"I DON'T KNOW THIS PARTICLE: "<<fp->pdg_code()<<"\n";
     }
     G4ParticleTable* particleTable = G4ParticleTable::GetParticleTable();
     G4ParticleDefinition* particledef = particleTable->FindParticle(fp->pdg_code());

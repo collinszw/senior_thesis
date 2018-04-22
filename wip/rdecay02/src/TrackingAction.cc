@@ -135,12 +135,13 @@ void TrackingAction::PreUserTrackingAction(const G4Track* track)
 
 void TrackingAction::PostUserTrackingAction(const G4Track* track)
 {
+  G4double track_energy = track->GetKineticEnergy();
   /*
   //Primary Particles only
   if (track->GetParentID() != 0) return;
 
   G4double total_energy = track->GetDynamicParticle()->GetPrimaryParticle()->GetKineticEnergy();
-  G4double track_energy = track->GetKineticEnergy();
+  
   
   
   //which volume ?

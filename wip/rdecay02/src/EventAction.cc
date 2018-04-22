@@ -49,6 +49,8 @@ std::ofstream ar_neutron_file;
 std::ofstream ar_proton_file;
 std::ofstream ar_photon_file;
 
+std::ofstream ar_extra_file;
+
 std::ofstream gd_out_file;
 std::ofstream gd_electron_file;
 std::ofstream gd_neutron_file;
@@ -58,15 +60,17 @@ std::ofstream gd_photon_file;
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 EventAction::EventAction()
-:G4UserEventAction(),
- fEdep1(0.), fEdep2(0.), fWeight1(0.), fWeight2(0.),
- fTime0(-1*s)
+  :G4UserEventAction(),
+   fEdep1(0.), fEdep2(0.), fWeight1(0.), fWeight2(0.),
+   fTime0(-1*s)
 {
   ar_out_file.open ("recovered_ar_energy_spectrum.txt");
   ar_electron_file.open ("electron_ar_energy_spectrum.txt");
   ar_neutron_file.open ("neutron_ar_energy_spectrum.txt");
   ar_proton_file.open ("proton_ar_energy_spectrum.txt");
   ar_photon_file.open ("photon_ar_energy_spectrum.txt");
+
+  ar_extra_file.open ("extra_ar_energy_spectrum.txt");
   
   gd_out_file.open ("recovered_gd_energy_spectrum.txt");
   gd_electron_file.open ("electron_gd_energy_spectrum.txt");
@@ -78,6 +82,9 @@ EventAction::EventAction()
   //std::ofstream blorfile;
   //blorfile.open("BLOOOORRRR.txt");
   //ar_out_file<<"WHATDAFUQQ\n";
+
+ 
+ 
 } 
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
@@ -99,12 +106,14 @@ void EventAction::BeginOfEventAction(const G4Event*)
   neutron_e_ar = 0;
   proton_e_ar = 0;
   photon_e_ar = 0;
-    
+
+  extra_e_ar = 0;
+  
   total_e_gd = 0;
   electron_e_gd = 0;
   neutron_e_gd = 0;
   proton_e_gd = 0;
-  photon_e_gd = 0;  
+  photon_e_gd = 0; 
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
@@ -116,36 +125,42 @@ void EventAction::AddEdep(G4int iVol, G4double edep,
   if (fTime0 < 0.) fTime0 = time;
   
   // out of time window ?
-  const G4double TimeWindow (1*microsecond);
-  if (std::fabs(time - fTime0) > TimeWindow) return;
+  const G4double TimeWindow (100*/*micro*/second); //using this time window meant not all energy is recovered
+  //if (std::fabs(time - fTime0) > TimeWindow) return;
   
   if (iVol == 1) {
     fEdep1 += edep;
     fWeight1 += edep*weight;
     if (PDG == 11){ //electron
       electron_e_ar+=edep;
+      total_e_ar+=edep;
     }else if (PDG == 2112){ //neutron
       neutron_e_ar+=edep;
+      total_e_ar+=edep;
     }else if (PDG == 2212){ //proton
       proton_e_ar+=edep;
+      total_e_ar+=edep;
     }else if (PDG == 22){ //photon
       photon_e_ar+=edep;
+      total_e_ar+=edep;
     }
-    total_e_ar+=edep;
   }
   if (iVol == 2) {
     fEdep2 += edep;
     fWeight2 += edep*weight;
     if (PDG == 11){ //electron
       electron_e_gd+=edep;
+      total_e_ar+=edep;
     }else if (PDG == 2112){ //neutron
       neutron_e_gd+=edep;
+      total_e_ar+=edep;
     }else if (PDG == 2212){ //proton
       proton_e_gd+=edep;
+      total_e_ar+=edep;
     }else if (PDG == 22){ //photon
       photon_e_gd+=edep;
+      total_e_ar+=edep;
     }
-    total_e_gd+=edep;
   }  
 }
 
@@ -153,75 +168,81 @@ void EventAction::AddEdep(G4int iVol, G4double edep,
 
 void EventAction::EndOfEventAction(const G4Event* Event)
 {
- G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
+  G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
  
- G4double Etot = fEdep1 + fEdep2;
- G4double Wtot = (fWeight1 + fWeight2)/Etot;
+  G4double Etot = fEdep1 + fEdep2;
+  G4double Wtot = (fWeight1 + fWeight2)/Etot;
  
- // pulse height in target
- //
- if (fEdep1 > 0.) {
+  // pulse height in target
+  //
+
+  if (fEdep1 > 0.) {
     fWeight1 /= fEdep1;
     //analysisManager->FillH1(0, fEdep1, fWeight1);   
     //old way of collecting event energy
     /*for(G4int i = 0;i<Event->GetPrimaryVertex()->GetNumberOfParticle();i++){
       if(Event->GetPrimaryVertex()->GetPrimary(i)->GetPDGcode() == 11){ //electron
-	electron_e_ar += Event->GetPrimaryVertex()->GetPrimary(i)->GetKineticEnergy();
+      electron_e_ar += Event->GetPrimaryVertex()->GetPrimary(i)->GetKineticEnergy();
       }else if(Event->GetPrimaryVertex()->GetPrimary(i)->GetPDGcode() == 2112){ //neutron
-	neutron_e_ar += Event->GetPrimaryVertex()->GetPrimary(i)->GetKineticEnergy();
+      neutron_e_ar += Event->GetPrimaryVertex()->GetPrimary(i)->GetKineticEnergy();
       }else if(Event->GetPrimaryVertex()->GetPrimary(i)->GetPDGcode() == 2212){ //proton
-	proton_e_ar += Event->GetPrimaryVertex()->GetPrimary(i)->GetKineticEnergy();
+      proton_e_ar += Event->GetPrimaryVertex()->GetPrimary(i)->GetKineticEnergy();
       }else if(Event->GetPrimaryVertex()->GetPrimary(i)->GetPDGcode() == 22){//photon
-	photon_e_ar += Event->GetPrimaryVertex()->GetPrimary(i)->GetKineticEnergy();
+      photon_e_ar += Event->GetPrimaryVertex()->GetPrimary(i)->GetKineticEnergy();
+      }else if(Event->GetPrimaryVertex()->GetPrimary(i)->GetPDGcode() == 0){//??
+      //std::cout<<"I DON'T KNOW THIS PARTICLE: "<<Event->GetPrimaryVertex()->GetPrimary(i)->GetPDGcode()<<"\n";
+      extra_e_ar += Event->GetPrimaryVertex()->GetPrimary(i)->GetKineticEnergy();
       }
       total_e_ar += Event->GetPrimaryVertex()->GetPrimary(i)->GetKineticEnergy();
-    }*/
- }
+      }*/
+  }
  
- // pulse height in detector
- //   
- if (fEdep2 > 0.) {
-   fWeight2 /= fEdep2;
-   analysisManager->FillH1(1, fEdep2, fWeight2);
+  // pulse height in detector
+  //   
+  if (fEdep2 > 0.) {
+    fWeight2 /= fEdep2;
+    analysisManager->FillH1(1, fEdep2, fWeight2);
 
- }
+  }
 
  
- ar_out_file<<total_e_ar<<"\n"; //energy spectrum of the neutrino
- ar_electron_file<<electron_e_ar<<"\n"; //energy spectrum of the electron
- ar_neutron_file<<neutron_e_ar<<"\n"; //energy spectrum of the neutron
- ar_proton_file<<proton_e_ar<<"\n"; //energy spectrum of the proton
- ar_photon_file<<photon_e_ar<<"\n"; //energy spectrum of the photon
+  ar_out_file<<total_e_ar<<"\n"; //energy spectrum of the neutrino
+  ar_electron_file<<electron_e_ar<<"\n"; //energy spectrum of the electron
+  ar_neutron_file<<neutron_e_ar<<"\n"; //energy spectrum of the neutron
+  ar_proton_file<<proton_e_ar<<"\n"; //energy spectrum of the proton
+  ar_photon_file<<photon_e_ar<<"\n"; //energy spectrum of the photon
+
+  ar_extra_file<<extra_e_ar<<"\n";
  
- gd_out_file<<total_e_gd<<"\n"; //energy spectrum of the neutrino
- gd_electron_file<<electron_e_gd<<"\n"; //energy spectrum of the electron
- gd_neutron_file<<neutron_e_gd<<"\n"; //energy spectrum of the neutron
- gd_proton_file<<proton_e_gd<<"\n"; //energy spectrum of the proton
- gd_photon_file<<photon_e_gd<<"\n"; //energy spectrum of the photon
+  gd_out_file<<total_e_gd<<"\n"; //energy spectrum of the neutrino
+  gd_electron_file<<electron_e_gd<<"\n"; //energy spectrum of the electron
+  gd_neutron_file<<neutron_e_gd<<"\n"; //energy spectrum of the neutron
+  gd_proton_file<<proton_e_gd<<"\n"; //energy spectrum of the proton
+  gd_photon_file<<photon_e_gd<<"\n"; //energy spectrum of the photon
  
- // total
- //
- analysisManager->FillH1(2, Etot, Wtot);
+  // total
+  //
+  analysisManager->FillH1(2, Etot, Wtot);
  
- // threshold in target and detector        
- const G4double Threshold1(10*keV), Threshold2(10*keV);
+  // threshold in target and detector        
+  const G4double Threshold1(10*keV), Threshold2(10*keV);
   
- //coincidence, anti-coincidences 
- //  
- G4bool coincidence       = ((fEdep1 >= Threshold1) && (fEdep2 >= Threshold2));
- G4bool anti_coincidence1 = ((fEdep1 >= Threshold1) && (fEdep2 <  Threshold2));
- G4bool anti_coincidence2 = ((fEdep1 <  Threshold1) && (fEdep2 >= Threshold2)); 
+  //coincidence, anti-coincidences 
+  //  
+  G4bool coincidence       = ((fEdep1 >= Threshold1) && (fEdep2 >= Threshold2));
+  G4bool anti_coincidence1 = ((fEdep1 >= Threshold1) && (fEdep2 <  Threshold2));
+  G4bool anti_coincidence2 = ((fEdep1 <  Threshold1) && (fEdep2 >= Threshold2)); 
 
- if (coincidence)       analysisManager->FillH1(3, fEdep2, fWeight2);
- if (anti_coincidence1) analysisManager->FillH1(4, fEdep1, fWeight1);
- if (anti_coincidence2) analysisManager->FillH1(5, fEdep2, fWeight2); 
+  if (coincidence)       analysisManager->FillH1(3, fEdep2, fWeight2);
+  if (anti_coincidence1) analysisManager->FillH1(4, fEdep1, fWeight1);
+  if (anti_coincidence2) analysisManager->FillH1(5, fEdep2, fWeight2); 
 
- // pass energies to Run
- //  
- Run* run = static_cast<Run*>(
-            G4RunManager::GetRunManager()->GetNonConstCurrentRun());
+  // pass energies to Run
+  //  
+  Run* run = static_cast<Run*>(
+			       G4RunManager::GetRunManager()->GetNonConstCurrentRun());
              
- run->AddEdep (fEdep1, fEdep2);
+  run->AddEdep (fEdep1, fEdep2);
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......

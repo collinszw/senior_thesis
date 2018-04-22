@@ -81,16 +81,29 @@ void SteppingAction::UserSteppingAction(const G4Step* aStep)
   const G4StepPoint* endPoint = aStep->GetPostStepPoint();
   const G4VProcess* process   = endPoint->GetProcessDefinedStep();
   run->CountProcesses(process, iVol);
+
+  
+  // particle being stepped
+  //
+  G4int PDG_id = aStep->GetTrack()->GetParticleDefinition()->GetPDGEncoding();
+
   
   // energy deposit
   //
   G4double edepStep = aStep->GetTotalEnergyDeposit();
 
-    
-  // particle being stepped
-  //
-  G4int PDG_id = aStep->GetTrack()->GetParticleDefinition()->GetPDGEncoding(); //something may be wrong here
-
+  if(PDG_id == 2112){
+    std::cout<<"yea, there are neutrons\n";
+    if (edepStep > 0){
+      std::cout<<"and they have this energy: " << edepStep << "\n";
+    }
+  }
+  if(PDG_id == 22){
+    std::cout<<"yea, there are photons\n";
+    if (edepStep > 0){
+      std::cout<<"and they have this energy: " << edepStep << "\n";
+    }
+  }
     
   //if (iVol == 2 && left_target){
     
