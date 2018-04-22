@@ -40,6 +40,7 @@
 // standard library includes
 #include <memory>
 
+#include <iostream>
 #include <fstream>
 #include "G4VUserPrimaryGeneratorAction.hh"
 #include "G4ParticleGun.hh"
@@ -80,6 +81,17 @@ public:
   
 private:
   std::ofstream neut_file;
+  std::ofstream e_file;
+  std::ofstream n_file;
+  std::ofstream p_file;
+  std::ofstream y_file;
+
+  G4double total_e;
+  G4double electron_e;
+  G4double neutron_e;
+  G4double proton_e;
+  G4double photon_e;
+  
   G4PrimaryParticle*  fPrimaryParticle;        //pointer a to G4 service class
   G4PrimaryVertex* vertex; 
 protected:

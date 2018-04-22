@@ -347,8 +347,8 @@
   ifstream photon;
   photon.open("photon_ar_energy_spectrum.txt",std::fstream::in);
 
-  ifstream extra;
-  extra.open("extra_ar_energy_spectrum.txt",std::fstream::in);
+  ifstream n_count;
+  n_count.open("extra_ar_energy_spectrum.txt",std::fstream::in);
 
   TH1F *neut_e_hist = new TH1F("neut_e_hist", "Total energy of the neutrino", 55,0,55);
   TH1F *rec_ar_e_hist = new TH1F("rec_ar_e_hist", "Recovered energy of the neutrino", 55,0,55);
@@ -357,10 +357,10 @@
   TH1F *neutron_ar_e_hist = new TH1F("neutron_ar_e_hist", "Deposited electron and neutron energy for an event", 55,0,55);
   TH1F *proton_ar_e_hist = new TH1F("proton_ar_e_hist", "Deposited electron, neutron, and proton energy for an event", 55,0,55);
   TH1F *photon_ar_e_hist = new TH1F("photon_ar_e_hist", "Deposited electron, neutron, proton, and photon energy for an event", 55,0,55);
-  TH1F *extra_ar_e_hist = new TH1F("extra_ar_e_hist", "Deposited electron, neutron, proton, photon, and extra energy for an event", 55,0,55);
+  TH1F *neutron_count_hist = new TH1F("neutron_count_hist", "Adjustment of total energy spectrum for neutron seperation energy", 55,0,55);
   
   Int_t e_line = 0;
-  Double_t neut_e[10000000], rec_ar_e[10000000], electron_ar_e[10000000], neutron_ar_e[10000000], proton_ar_e[10000000], photon_ar_e[10000000], extra_ar_e[10000000];
+  Double_t neut_e[10000000], rec_ar_e[10000000], electron_ar_e[10000000], neutron_ar_e[10000000], proton_ar_e[10000000], photon_ar_e[10000000], neutron_count[10000000];
 
   while(1){
     neut >> neut_e[e_line];
@@ -371,16 +371,25 @@
     proton >> proton_ar_e[e_line];
     photon >> photon_ar_e[e_line];
 
-    extra >> extra_ar_e[e_line];
+    n_count >> neutron_count[e_line];
+    if(neutron_count[e_line] == 1){
+      neutron_count[e_line] = 9.04; //now it's energy
+    }else if(neutron_count[e_line] == 2){
+      neutron_count[e_line] = 22.64; //now it's energy
+    }
+    
+    
 
     neut_e_hist->Fill(neut_e[e_line]);
     rec_ar_e_hist->Fill(rec_ar_e[e_line]);
 
+    
+    
     electron_ar_e_hist->Fill(electron_ar_e[e_line]);
     neutron_ar_e_hist->Fill(electron_ar_e[e_line]+neutron_ar_e[e_line]);
     proton_ar_e_hist->Fill(electron_ar_e[e_line]+neutron_ar_e[e_line]+proton_ar_e[e_line]);
     photon_ar_e_hist->Fill(electron_ar_e[e_line]+neutron_ar_e[e_line]+photon_ar_e[e_line]+photon_ar_e[e_line]);
-    extra_ar_e_hist->Fill(electron_ar_e[e_line]+neutron_ar_e[e_line]+photon_ar_e[e_line]+photon_ar_e[e_line]+extra_ar_e[e_line]);
+    neutron_count_hist->Fill(electron_ar_e[e_line]+neutron_ar_e[e_line]+photon_ar_e[e_line]+photon_ar_e[e_line]+neutron_count[e_line]);
 
     if (!neut.good()) break;
     if (!out.good()) break;
@@ -388,7 +397,6 @@
     if (!neutron.good()) break;
     if (!proton.good()) break;
     if (!photon.good()) break;
-    if (!extra.good()) break;
     e_line++;
   }
 
@@ -412,9 +420,9 @@
   photon_ar_e_hist->Draw("PC* SAME");
   photon_ar_e_hist->SetMarkerColor(kMagenta);
   photon_ar_e_hist->SetLineColor(kMagenta);
-  //extra_ar_e_hist->Draw("PC* SAME");
-  extra_ar_e_hist->SetMarkerColor(kRed);
-  extra_ar_e_hist->SetLineColor(kRed);
+  neutron_count_hist->Draw("PC* SAME");
+  neutron_count_hist->SetMarkerColor(kRed);
+  neutron_count_hist->SetLineColor(kRed);
 
 
   c8->BuildLegend(0.1,0.9,0.4,0.75);
