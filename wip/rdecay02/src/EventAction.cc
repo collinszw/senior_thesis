@@ -127,14 +127,9 @@ void EventAction::AddEdep(G4int iVol, G4double edep,
   if (fTime0 < 0.) fTime0 = time;
   
   // out of time window ?
-<<<<<<< HEAD
   const G4double TimeWindow (1*microsecond); //still trying to figure this thing out
   if (std::fabs(time - fTime0) > TimeWindow) return;
-=======
-  //const G4double TimeWindow (1*/*micro*/second); //using this time window meant not all energy is recovered
-  //if (std::fabs(time - fTime0) > TimeWindow) return;
->>>>>>> master
-  
+    
   if (iVol == 1) {
     fEdep1 += edep;
     fWeight1 += edep*weight;
