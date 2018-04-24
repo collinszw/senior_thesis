@@ -349,20 +349,23 @@
 
   ifstream n_count;
   n_count.open("neutron_count.txt",std::fstream::in);
+  ifstream p_count;
+  p_count.open("proton_count.txt",std::fstream::in);
 
-  TH1F *neut_e_hist = new TH1F("neut_e_hist", "Total energy of the neutrino", 55,0,55);
-  TH1F *rec_ar_e_hist = new TH1F("rec_ar_e_hist", "Recovered energy of the neutrino", 55,0,55);
+  TH1F *neut_e_hist = new TH1F("neut_e_hist", "Total energy of the neutrino", 28,0,56);
+  TH1F *rec_ar_e_hist = new TH1F("rec_ar_e_hist", "Recovered energy of the neutrino", 28,0,56);
 
-  TH1F *electron_ar_e_hist = new TH1F("electron_ar_e_hist", "Deposited electron energy for an event", 55,0,55);
-  TH1F *neutron_ar_e_hist = new TH1F("neutron_ar_e_hist", "Deposited electron and neutron energy for an event", 55,0,55);
-  TH1F *proton_ar_e_hist = new TH1F("proton_ar_e_hist", "Deposited electron, neutron, and proton energy for an event", 55,0,55);
-  TH1F *photon_ar_e_hist = new TH1F("photon_ar_e_hist", "Deposited electron, neutron, proton, and photon energy for an event", 55,0,55);
-  TH1F *neutron_count_hist = new TH1F("neutron_count_hist", "Adjustment of total energy spectrum for neutron seperation energy", 55,0,55);
+  TH1F *electron_ar_e_hist = new TH1F("electron_ar_e_hist", "Deposited electron energy for an event", 28,0,56);
+  TH1F *neutron_ar_e_hist = new TH1F("neutron_ar_e_hist", "Deposited electron and neutron energy for an event", 28,0,56);
+  TH1F *proton_ar_e_hist = new TH1F("proton_ar_e_hist", "Deposited electron, neutron, and proton energy for an event", 28,0,56);
+  TH1F *photon_ar_e_hist = new TH1F("photon_ar_e_hist", "Deposited electron, neutron, proton, and photon energy for an event", 28,0,56);
+  TH1F *neutron_count_hist = new TH1F("neutron_count_hist", "Adjustment of total energy spectrum for neutron seperation energy", 28,0,56);
+  TH1F *proton_count_hist = new TH1F("proton_count_hist", "Adjustment of total energy spectrum for proton seperation energy", 28,0,56);
   
   Int_t e_line = 0;
   Double_t neut_e[10000000], rec_ar_e[10000000], electron_ar_e[10000000], neutron_ar_e[10000000], proton_ar_e[10000000], photon_ar_e[10000000], neutron_count[10000000];
 
-  while(1){
+  while(1){ 
     neut >> neut_e[e_line];
     //std::cout<<neut_e[e_line]<<"\n";
     out >> rec_ar_e[e_line];
@@ -374,11 +377,19 @@
     proton >> proton_ar_e[e_line];
     photon >> photon_ar_e[e_line];
 
+
+    // source for energies: https://arxiv.org/pdf/1704.08906.pdf
     n_count >> neutron_count[e_line];
     if(neutron_count[e_line] == 1){
-      neutron_count[e_line] = 9.04; //now it's energy
+      neutron_count[e_line] = 7.62; //now it's energy
     }else if(neutron_count[e_line] == 2){
-      neutron_count[e_line] = 22.64; //now it's energy
+      neutron_count[e_line] = 22.11; //now it's energy
+    }
+    p_count >> proton_count[e_line];
+    if(proton_count[e_line] == 1){
+      proton_count[e_line] = 8.03; //now it's energy
+    }else if(proton_count[e_line] == 2){
+      proton_count[e_line] = 19.73; //now it's energy
     }
     
 
@@ -391,6 +402,7 @@
     proton_ar_e_hist->Fill(electron_ar_e[e_line]+neutron_ar_e[e_line]+proton_ar_e[e_line]);
     photon_ar_e_hist->Fill(electron_ar_e[e_line]+neutron_ar_e[e_line]+photon_ar_e[e_line]+photon_ar_e[e_line]);
     neutron_count_hist->Fill(electron_ar_e[e_line]+neutron_ar_e[e_line]+photon_ar_e[e_line]+photon_ar_e[e_line]+neutron_count[e_line]);
+    neutron_count_hist->Fill(electron_ar_e[e_line]+neutron_ar_e[e_line]+photon_ar_e[e_line]+photon_ar_e[e_line]+neutron_count[e_line]+proton_count);
 
     if (!neut.good()) break;
     if (!out.good()) break;
@@ -443,12 +455,12 @@
   proton.open("proton_energy_spectrum.txt",std::fstream::in);
   photon.open("photon_energy_spectrum.txt",std::fstream::in);
 
-  TH1F *rec_gd_e_hist = new TH1F("rec_e_hist", "Recovered energy of the neutrino", 55,0,55);
+  TH1F *rec_gd_e_hist = new TH1F("rec_e_hist", "Recovered energy of the neutrino", 28,0,56);
 
-  TH1F *electron_gd_e_hist = new TH1F("electron_gd_e_hist", "Incoming electron energy for an event", 55,0,55);
-  TH1F *neutron_gd_e_hist = new TH1F("neutron_gd_e_hist", "Incoming electron and neutron energy for an event", 55,0,55);
-  TH1F *proton_gd_e_hist = new TH1F("proton_gd_e_hist", "Incoming electron, neutron, and proton energy for an event", 55,0,55);
-  TH1F *photon_gd_e_hist = new TH1F("photon_gd_e_hist", "Incoming electron, neutron, proton, and photon energy for an event", 55,0,55);
+  TH1F *electron_gd_e_hist = new TH1F("electron_gd_e_hist", "Incoming electron energy for an event", 28,0,56);
+  TH1F *neutron_gd_e_hist = new TH1F("neutron_gd_e_hist", "Incoming electron and neutron energy for an event", 28,0,56);
+  TH1F *proton_gd_e_hist = new TH1F("proton_gd_e_hist", "Incoming electron, neutron, and proton energy for an event", 28,0,56);
+  TH1F *photon_gd_e_hist = new TH1F("photon_gd_e_hist", "Incoming electron, neutron, proton, and photon energy for an event", 28,0,56);
   
   e_line = 0;
   Double_t rec_gd_e[10000000], electron_gd_e[10000000], neutron_gd_e[10000000], proton_gd_e[10000000], photon_gd_e[10000000];
