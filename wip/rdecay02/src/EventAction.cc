@@ -127,7 +127,7 @@ void EventAction::AddEdep(G4int iVol, G4double edep,
   if (fTime0 < 0.) fTime0 = time;
   
   // out of time window ?
-  const G4double TimeWindow (100*/*micro*/second); //using this time window meant not all energy is recovered
+  //const G4double TimeWindow (1*microsecond); //WHAT DOES THIS MEEEAAANN
   //if (std::fabs(time - fTime0) > TimeWindow) return;
   
   if (iVol == 1) {
@@ -135,20 +135,29 @@ void EventAction::AddEdep(G4int iVol, G4double edep,
     fWeight1 += edep*weight;
     if (PDG == 11){ //electron
       electron_e_ar+=edep;
+      electron_w_ar+=edep*weight;
       total_e_ar+=edep;
+      total_w_ar+=edep*weight;
     }else if (PDG == 2112){ //neutron
       neutron_e_ar+=edep;
+      neutron_w_ar+=edep*weight;
       total_e_ar+=edep;
+      total_w_ar+=edep*weight;
     }else if (PDG == 2212){ //proton
       proton_e_ar+=edep;
+      proton_w_ar+=edep*weight;
       total_e_ar+=edep;
+      total_w_ar+=edep*weight;
     }else if (PDG == 22){ //photon
       photon_e_ar+=edep;
+      photon_w_ar+=edep*weight;
       ind_photon_e_ar+=edep;
       total_e_ar+=edep;
+      total_w_ar+=edep*weight;
       if(parent){ //new photon
-	ar_ind_photon_file<<ind_photon_e_ar<<"\n"; //energy spectrum of the photon
+	ar_ind_photon_file<<ind_photon_e_ar<<ind_photon_w_ar<<"\n"; //energy spectrum of the photon
 	ind_photon_e_ar = 0;
+	ind_photon_w_ar = 0;
       }
     }
   }
@@ -157,20 +166,30 @@ void EventAction::AddEdep(G4int iVol, G4double edep,
     fWeight2 += edep*weight;
     if (PDG == 11){ //electron
       electron_e_gd+=edep;
+      electron_w_gd+=edep*weight;
       total_e_gd+=edep;
+      total_w_gd+=edep*weight;
     }else if (PDG == 2112){ //neutron
       neutron_e_gd+=edep;
+      neutron_w_gd+=edep*weight;
       total_e_gd+=edep;
+      total_w_gd+=edep*weight;
     }else if (PDG == 2212){ //proton
       proton_e_gd+=edep;
+      proton_w_gd+=edep*weight;
       total_e_gd+=edep;
+      total_w_gd+=edep*weight;
     }else if (PDG == 22){ //photon
       photon_e_gd+=edep;
+      photon_w_gd+=edep*weight;
       ind_photon_e_gd+=edep;
+      ind_photon_w_gd+=edep*weight;
       total_e_gd+=edep;
+      total_w_gd+=edep*weight;
       if(parent){ //new photon
-	ar_ind_photon_file<<ind_photon_e_gd<<"\n"; //energy spectrum of the photon
+	ar_ind_photon_file<<ind_photon_e_gd<<ind_photon_w_gd<<"\n"; //energy spectrum of the photon
 	ind_photon_e_gd = 0;
+	ind_photon_w_gd = 0;
       }
     }
   }  
@@ -217,22 +236,38 @@ void EventAction::EndOfEventAction(const G4Event* Event)
 
   }
 
+
+  
+  total_w_ar /= total_e_ar;
+  electron_w_ar /= electron_e_ar;
+  neutron_w_ar /= neutron_e_ar;
+  proton_w_ar /= proton_e_ar;
+  photon_w_ar /= photon_e_ar;
+  ind_photon_w_ar /= ind_photon_e_ar;
+  
  
-  ar_out_file<<total_e_ar<<"\n"; //energy spectrum of the neutrino
-  ar_electron_file<<electron_e_ar<<"\n"; //energy spectrum of the electron
-  ar_neutron_file<<neutron_e_ar<<"\n"; //energy spectrum of the neutron
-  ar_proton_file<<proton_e_ar<<"\n"; //energy spectrum of the proton
-  ar_photon_file<<photon_e_ar<<"\n"; //energy spectrum of the photon
+  total_w_gd /= total_e_gd;
+  electron_w_gd /= electron_e_gd;
+  neutron_w_gd /= neutron_e_gd;
+  proton_w_gd /= proton_e_gd;
+  photon_w_gd /= photon_e_gd;
+  ind_photon_w_gd /= ind_photon_e_gd;
+  
+  ar_out_file<<total_e_ar<<total_w_ar<<"\n"; //energy spectrum of the neutrino
+  ar_electron_file<<electron_e_ar<<electron_w_ar<<"\n"; //energy spectrum of the electron
+  ar_neutron_file<<neutron_e_ar<<neutron_w_ar<<"\n"; //energy spectrum of the neutron
+  ar_proton_file<<proton_e_ar<<proton_w_ar<<"\n"; //energy spectrum of the proton
+  ar_photon_file<<photon_e_ar<<photon_w_ar<<"\n"; //energy spectrum of the photon
   ar_ind_photon_file<<"\n"; //energy spectrum of the photon
 
   ar_extra_file<<extra_e_ar<<"\n";
  
-  gd_out_file<<total_e_gd<<"\n"; //energy spectrum of the neutrino
-  gd_electron_file<<electron_e_gd<<"\n"; //energy spectrum of the electron
-  gd_neutron_file<<neutron_e_gd<<"\n"; //energy spectrum of the neutron
-  gd_proton_file<<proton_e_gd<<"\n"; //energy spectrum of the proton
-  gd_photon_file<<photon_e_gd<<"\n"; //energy spectrum of the photon
-  ar_ind_photon_file<<"\n"; //energy spectrum of the photon
+  gd_out_file<<total_e_gd<<total_w_gd<<"\n"; //energy spectrum of the neutrino
+  gd_electron_file<<electron_e_gd<<electron_w_gd<<"\n"; //energy spectrum of the electron
+  gd_neutron_file<<neutron_e_gd<<neutron_w_gd<<"\n"; //energy spectrum of the neutron
+  gd_proton_file<<proton_e_gd<<proton_w_gd<<"\n"; //energy spectrum of the proton
+  gd_photon_file<<photon_e_gd<<photon_w_gd<<"\n"; //energy spectrum of the photon
+  gd_ind_photon_file<<"\n"; //energy spectrum of the photon
   
   // total
   //

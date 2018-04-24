@@ -99,24 +99,12 @@ void SteppingAction::UserSteppingAction(const G4Step* aStep)
   // energy deposit
   //
   G4double edepStep = aStep->GetTotalEnergyDeposit();
-  /*
-    if(PDG_id == 2112){
-    std::cout<<"yea, there are neutrons\n";
-    if (edepStep > 0){
-    std::cout<<"and they have this energy: " << edepStep << "\n";
-    }
-    }
-    if(PDG_id == 22){
-    std::cout<<"yea, there are photons\n";
-    if (edepStep > 0){
-    std::cout<<"and they have this energy: " << edepStep << "\n";
-    }
-    }*/
+
     
   //if (iVol == 2 && left_target){
     
   
-  if (iVol == 2 && edepStep <= 0.){
+  if (edepStep <= 0.){
     //analysisManager->FillH1(0, fEdep1, fWeight1);
     fEdep1 = fWeight1 = 0;
     left_target = 0;
