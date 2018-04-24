@@ -101,15 +101,10 @@ void SteppingAction::UserSteppingAction(const G4Step* aStep)
   G4double edepStep = aStep->GetTotalEnergyDeposit();
 
     
-  //if (iVol == 2 && left_target){
-    
-  
-  if (edepStep <= 0.){
+  if (iVol == 2 && left_target){
     //analysisManager->FillH1(0, fEdep1, fWeight1);
     fEdep1 = fWeight1 = 0;
     left_target = 0;
-  
-    return;
   }
   G4double time   = aStep->GetPreStepPoint()->GetGlobalTime();
   G4double weight = aStep->GetPreStepPoint()->GetWeight();   

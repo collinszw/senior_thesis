@@ -364,9 +364,12 @@
 
   while(1){
     neut >> neut_e[e_line];
-    std::cout<<neut_e[e_line]<<"\n";
+    //std::cout<<neut_e[e_line]<<"\n";
     out >> rec_ar_e[e_line];
     electron >> electron_ar_e[e_line];
+    if(electron_ar_e[e_line] <  10){
+      //std::cout<<electron_ar_e[e_line]<<"\n";
+    }
     neutron >> neutron_ar_e[e_line];
     proton >> proton_ar_e[e_line];
     photon >> photon_ar_e[e_line];
@@ -418,7 +421,7 @@
   photon_ar_e_hist->Draw("PC* SAME");
   photon_ar_e_hist->SetMarkerColor(kMagenta);
   photon_ar_e_hist->SetLineColor(kMagenta);
-  neutron_count_hist->Draw("PC* SAME");
+  //neutron_count_hist->Draw("PC* SAME");
   neutron_count_hist->SetMarkerColor(kRed);
   neutron_count_hist->SetLineColor(kRed);
 
