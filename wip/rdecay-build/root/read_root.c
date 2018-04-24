@@ -426,7 +426,7 @@
 
 
   c8->BuildLegend(0.1,0.9,0.4,0.75);
-  neut_e_hist->SetTitle("Incoming neutrino energy vs energy deposited in the TPC volume (liquid argon)");
+  //neut_e_hist->SetTitle("Incoming neutrino energy vs energy in the TPC volume (liquid argon)");
   c8->SetTitle("Incoming neutrino energy vs energy deposited in the TPC volume (liquid argon)");
   
 
@@ -444,10 +444,10 @@
 
   TH1F *rec_gd_e_hist = new TH1F("rec_e_hist", "Recovered energy of the neutrino", 55,0,55);
 
-  TH1F *electron_gd_e_hist = new TH1F("electron_gd_e_hist", "Deposited electron energy for an event", 55,0,55);
-  TH1F *neutron_gd_e_hist = new TH1F("neutron_gd_e_hist", "Deposited electron and neutron energy for an event", 55,0,55);
-  TH1F *proton_gd_e_hist = new TH1F("proton_gd_e_hist", "Deposited electron, neutron, and proton energy for an event", 55,0,55);
-  TH1F *photon_gd_e_hist = new TH1F("photon_gd_e_hist", "Deposited electron, neutron, proton, and photon energy for an event", 55,0,55);
+  TH1F *electron_gd_e_hist = new TH1F("electron_gd_e_hist", "Incoming electron energy for an event", 55,0,55);
+  TH1F *neutron_gd_e_hist = new TH1F("neutron_gd_e_hist", "Incoming electron and neutron energy for an event", 55,0,55);
+  TH1F *proton_gd_e_hist = new TH1F("proton_gd_e_hist", "Incoming electron, neutron, and proton energy for an event", 55,0,55);
+  TH1F *photon_gd_e_hist = new TH1F("photon_gd_e_hist", "Incoming electron, neutron, proton, and photon energy for an event", 55,0,55);
   
   e_line = 0;
   Double_t rec_gd_e[10000000], electron_gd_e[10000000], neutron_gd_e[10000000], proton_gd_e[10000000], photon_gd_e[10000000];
@@ -497,6 +497,7 @@
 
 
   c9->BuildLegend(0.1,0.9,0.4,0.75);
+  neut_e_hist->SetTitle("Incoming neutrino energy vs energy in the TPC volume (liquid argon)");
   //neut_e_hist->SetTitle("Incoming neutrino energy vs energy deposited in the TPC volume (with plastic scintillator)");
   c9->SetTitle("Incoming neutrino energy vs energy deposited in the TPC volume (with plastic scintillator) ");
   
