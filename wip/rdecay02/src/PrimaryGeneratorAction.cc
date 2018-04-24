@@ -72,6 +72,7 @@ PrimaryGeneratorAction::PrimaryGeneratorAction(const std::string& config_file_na
   ind_y_file.open ("individual_photon_energy_spectrum.txt");
 
   n_count_file.open ("neutron_count.txt");
+  p_count_file.open ("proton_count.txt");
 
 
   //new way
@@ -154,6 +155,7 @@ void PrimaryGeneratorAction::GeneratePrimaries(G4Event* anEvent)
   proton_e = 0;
   photon_e = 0;
   n_count = 0;
+  p_count = 0;
   
   for ( const auto& fp : ev.get_final_particles() ) {
     if (fp->pdg_code() == 11){ //electron
@@ -163,6 +165,7 @@ void PrimaryGeneratorAction::GeneratePrimaries(G4Event* anEvent)
       n_count++;
     }else if (fp->pdg_code() == 2212){ //proton
       proton_e += fp->kinetic_energy();
+      p_count++;
     }else if (fp->pdg_code() == 22){ //photon
       ind_photon_e = fp->kinetic_energy();
       photon_e += ind_photon_e;
@@ -187,6 +190,7 @@ void PrimaryGeneratorAction::GeneratePrimaries(G4Event* anEvent)
   y_file<<photon_e<<"\n"; //energy spectrum of the photon
   ind_y_file<<"\n"; //energy spectrum of the photon
   n_count_file<<n_count<<"\n"; //number of neutrons per event
+  p_count_file<<n_count<<"\n"; //number of neutrons per event
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......

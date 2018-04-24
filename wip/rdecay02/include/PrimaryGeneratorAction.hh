@@ -88,6 +88,7 @@ private:
   std::ofstream ind_y_file;
 
   std::ofstream n_count_file;
+  std::ofstream p_count_file;
 
   G4double total_e;
   G4double electron_e;
@@ -97,6 +98,7 @@ private:
   G4double ind_photon_e;
   
   G4double n_count;
+  G4double p_count;
   
   G4PrimaryParticle*  fPrimaryParticle;        //pointer a to G4 service class
   G4PrimaryVertex* vertex; 

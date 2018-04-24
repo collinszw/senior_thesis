@@ -61,9 +61,9 @@ DetectorConstruction::DetectorConstruction()
    fWorldMater(0), fPhysiWorld(0),
    fDetectorMessenger(0)
 {
-  fTargetLength      = 3200000000000*cm; //target is argon
-  fTargetRadius      = 5000000000000*cm;
-  fDetectorLength    = 3200000000000*cm; //detector is doped plastic 
+  fTargetLength      = 32000000000*cm; //target is argon
+  fTargetRadius      = 50000000000*cm;
+  fDetectorLength    = 32000000000*cm; //detector is doped plastic 
   fDetectorThickness = 1*cm;
   
   fWorldLength = std::max(fTargetLength,fDetectorLength);

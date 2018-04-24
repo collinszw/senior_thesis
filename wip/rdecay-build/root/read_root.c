@@ -364,7 +364,7 @@
 
   while(1){
     neut >> neut_e[e_line];
-    //std::cout<<neut_e[e_line]<<"\n";
+    std::cout<<neut_e[e_line]<<"\n";
     out >> rec_ar_e[e_line];
     electron >> electron_ar_e[e_line];
     neutron >> neutron_ar_e[e_line];
@@ -378,11 +378,9 @@
       neutron_count[e_line] = 22.64; //now it's energy
     }
     
-    
 
     neut_e_hist->Fill(neut_e[e_line]);
     rec_ar_e_hist->Fill(rec_ar_e[e_line]);
-
     
     
     electron_ar_e_hist->Fill(electron_ar_e[e_line]);

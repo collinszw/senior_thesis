@@ -58,20 +58,32 @@ public:
 private:
 
   G4double total_e_ar;
+  G4double total_w_ar;
   G4double electron_e_ar;
+  G4double electron_w_ar;
   G4double neutron_e_ar;
+  G4double neutron_w_ar;
   G4double proton_e_ar;
+  G4double proton_w_ar;
   G4double photon_e_ar;
+  G4double photon_w_ar;
   G4double ind_photon_e_ar;
+  G4double ind_photon_w_ar;
 
   G4double extra_e_ar;
 
   G4double total_e_gd;
+  G4double total_w_gd;
   G4double electron_e_gd;
+  G4double electron_w_gd;
   G4double neutron_e_gd;
+  G4double neutron_w_gd;
   G4double proton_e_gd;
+  G4double proton_w_gd;
   G4double photon_e_gd;
+  G4double photon_w_gd;
   G4double ind_photon_e_gd;
+  G4double ind_photon_w_gd;
   
   G4double fEdep1,   fEdep2;
   G4double fWeight1, fWeight2;
