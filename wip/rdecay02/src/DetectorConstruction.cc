@@ -61,10 +61,10 @@ DetectorConstruction::DetectorConstruction()
    fWorldMater(0), fPhysiWorld(0),
    fDetectorMessenger(0)
 {
-  fTargetLength      = 32000000000000*cm; //target is argon
-  fTargetRadius      = 50000000000000*cm;
-  fDetectorLength    = 32000000000000*cm; //detector is doped plastic 
-  fDetectorThickness = 1*cm;
+  fTargetLength      = 32*cm; //target is argon
+  fTargetRadius      = 50*cm;
+  fDetectorLength    = 32*cm; //detector is doped plastic 
+  fDetectorThickness = 2*cm;
   
   fWorldLength = std::max(fTargetLength,fDetectorLength);
   fWorldRadius = fTargetRadius + fDetectorThickness;
@@ -127,7 +127,7 @@ void DetectorConstruction::DefineMaterials()
     
 
   fWorldMater = Air20;
-  fDetectorMater = Air20;//Polystyrene_Gd; //needs to be  polystyrene + Gd
+  fDetectorMater = Polystyrene_Gd; //needs to be  polystyrene + Gd
   fTargetMater = lAr;  
 
 }

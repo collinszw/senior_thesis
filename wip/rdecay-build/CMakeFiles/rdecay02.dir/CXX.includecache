@@ -10483,6 +10483,8 @@ G4UserSteppingAction.hh
 /home/zcollins/thesis/geant/wip/rdecay02/include/G4UserSteppingAction.hh
 globals.hh
 /home/zcollins/thesis/geant/wip/rdecay02/include/globals.hh
+fstream
+-
 
 /home/zcollins/thesis/geant/wip/rdecay02/include/SteppingVerbose.hh
 G4SteppingVerbose.hh

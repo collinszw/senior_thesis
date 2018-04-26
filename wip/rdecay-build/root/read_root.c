@@ -349,8 +349,8 @@
 
   ifstream n_count;
   n_count.open("neutron_count.txt",std::fstream::in);
-  ifstream p_count;
-  p_count.open("proton_count.txt",std::fstream::in);
+  ifstream n_cap;
+  n_cap.open("neutron_capture_ar.txt",std::fstream::in);
 
   TH1F *neut_e_hist = new TH1F("neut_e_hist", "Total energy of the neutrino", 28,0,56);
   TH1F *rec_ar_e_hist = new TH1F("rec_ar_e_hist", "Recovered energy of the neutrino", 28,0,56);
@@ -363,8 +363,9 @@
   TH1F *proton_count_hist = new TH1F("proton_count_hist", "Adjustment of total energy spectrum for proton seperation energy", 28,0,56);
   
   Int_t e_line = 0;
-  Double_t neut_e[10000000], rec_ar_e[10000000], electron_ar_e[10000000], neutron_ar_e[10000000], proton_ar_e[10000000], photon_ar_e[10000000], neutron_count[10000000];
+  Double_t neut_e[10000000], rec_ar_e[10000000], electron_ar_e[10000000], neutron_ar_e[10000000], proton_ar_e[10000000], photon_ar_e[10000000], neutron_count[10000000], proton_count[10000000], n_cap_count_ar[10000000], n_tot_ar, n_cap_ar;
 
+  n_cap_ar = 0;
   while(1){ 
     neut >> neut_e[e_line];
     //std::cout<<neut_e[e_line]<<"\n";
@@ -380,7 +381,10 @@
 
     // source for energies: https://arxiv.org/pdf/1704.08906.pdf
     n_count >> neutron_count[e_line];
-    if(neutron_count[e_line] == 1){
+    n_tot_ar+= neutron_count[e_line];
+    n_cap >> n_cap_count_ar[e_line];
+    n_cap_ar += n_cap_count_ar[e_line];
+    /*if(neutron_count[e_line] == 1){
       neutron_count[e_line] = 7.62; //now it's energy
     }else if(neutron_count[e_line] == 2){
       neutron_count[e_line] = 22.11; //now it's energy
@@ -390,7 +394,7 @@
       proton_count[e_line] = 8.03; //now it's energy
     }else if(proton_count[e_line] == 2){
       proton_count[e_line] = 19.73; //now it's energy
-    }
+    }*/
     
 
     neut_e_hist->Fill(neut_e[e_line]);
@@ -400,9 +404,9 @@
     electron_ar_e_hist->Fill(electron_ar_e[e_line]);
     neutron_ar_e_hist->Fill(electron_ar_e[e_line]+neutron_ar_e[e_line]);
     proton_ar_e_hist->Fill(electron_ar_e[e_line]+neutron_ar_e[e_line]+proton_ar_e[e_line]);
-    photon_ar_e_hist->Fill(electron_ar_e[e_line]+neutron_ar_e[e_line]+photon_ar_e[e_line]+photon_ar_e[e_line]);
-    neutron_count_hist->Fill(electron_ar_e[e_line]+neutron_ar_e[e_line]+photon_ar_e[e_line]+photon_ar_e[e_line]+neutron_count[e_line]);
-    neutron_count_hist->Fill(electron_ar_e[e_line]+neutron_ar_e[e_line]+photon_ar_e[e_line]+photon_ar_e[e_line]+neutron_count[e_line]+proton_count);
+    photon_ar_e_hist->Fill(electron_ar_e[e_line]+neutron_ar_e[e_line]+proton_ar_e[e_line]+photon_ar_e[e_line]);
+    //neutron_count_hist->Fill(electron_ar_e[e_line]+neutron_ar_e[e_line]+photon_ar_e[e_line]+photon_ar_e[e_line]+neutron_count[e_line]);
+    //proton_count_hist->Fill(electron_ar_e[e_line]+neutron_ar_e[e_line]+photon_ar_e[e_line]+photon_ar_e[e_line]+neutron_count[e_line]+proton_count[e_line]);
 
     if (!neut.good()) break;
     if (!out.good()) break;
@@ -413,29 +417,29 @@
     e_line++;
   }
 
+  
+  std::cout<<"Neutron efficiency in ar: "<< n_cap_ar/n_tot_ar<< " , with " << n_cap_ar <<" neutrons captured, out of "<< n_tot_ar <<" total neutrons \n";
+  
   c8->cd();
-  neut_e_hist->Draw("PC*");
+  neut_e_hist->Draw("");
   neut_e_hist->SetMarkerColor(kBlue);
   neut_e_hist->SetLineColor(kBlue);
   neut_e_hist->GetXaxis()->SetTitle("Energy (MEv)");
   //rec_ar_e_hist->Draw("PC* SAME");
   rec_ar_e_hist->SetMarkerColor(kRed);
   rec_ar_e_hist->SetLineColor(kRed);
-  electron_ar_e_hist->Draw("PC* SAME");
+  electron_ar_e_hist->Draw("SAME");
   electron_ar_e_hist->SetMarkerColor(kGreen);
   electron_ar_e_hist->SetLineColor(kGreen);
-  neutron_ar_e_hist->Draw("PC* SAME");
+  neutron_ar_e_hist->Draw("SAME");
   neutron_ar_e_hist->SetMarkerColor(kYellow);
   neutron_ar_e_hist->SetLineColor(kYellow);
-  proton_ar_e_hist->Draw("PC* SAME");
+  proton_ar_e_hist->Draw("SAME");
   proton_ar_e_hist->SetMarkerColor(kCyan);
   proton_ar_e_hist->SetLineColor(kCyan);
-  photon_ar_e_hist->Draw("PC* SAME");
+  photon_ar_e_hist->Draw("SAME");
   photon_ar_e_hist->SetMarkerColor(kMagenta);
   photon_ar_e_hist->SetLineColor(kMagenta);
-  //neutron_count_hist->Draw("PC* SAME");
-  neutron_count_hist->SetMarkerColor(kRed);
-  neutron_count_hist->SetLineColor(kRed);
 
 
   c8->BuildLegend(0.1,0.9,0.4,0.75);
@@ -448,6 +452,7 @@
   neutron.close();
   proton.close();
   photon.close();
+  n_cap.close();
   
   out.open("recovered_energy_spectrum.txt",std::fstream::in);
   electron.open("electron_energy_spectrum.txt",std::fstream::in);
@@ -455,6 +460,8 @@
   proton.open("proton_energy_spectrum.txt",std::fstream::in);
   photon.open("photon_energy_spectrum.txt",std::fstream::in);
 
+  n_cap.open("neutron_capture_gd.txt",std::fstream::in);
+  
   TH1F *rec_gd_e_hist = new TH1F("rec_e_hist", "Recovered energy of the neutrino", 28,0,56);
 
   TH1F *electron_gd_e_hist = new TH1F("electron_gd_e_hist", "Incoming electron energy for an event", 28,0,56);
@@ -463,8 +470,9 @@
   TH1F *photon_gd_e_hist = new TH1F("photon_gd_e_hist", "Incoming electron, neutron, proton, and photon energy for an event", 28,0,56);
   
   e_line = 0;
-  Double_t rec_gd_e[10000000], electron_gd_e[10000000], neutron_gd_e[10000000], proton_gd_e[10000000], photon_gd_e[10000000];
+  Double_t rec_gd_e[10000000], electron_gd_e[10000000], neutron_gd_e[10000000], proton_gd_e[10000000], photon_gd_e[10000000], n_cap_count_gd[10000000], n_cap_gd, n_tot_gd;
 
+  n_cap_gd = 0;
   while(1){
     out >> rec_gd_e[e_line];
     electron >> electron_gd_e[e_line];
@@ -474,10 +482,15 @@
 
     rec_gd_e_hist->Fill(rec_ar_e[e_line]+rec_gd_e[e_line]);
 
+    n_count >> neutron_count[e_line];
+    n_tot_gd+= neutron_count[e_line];
+    n_cap >> n_cap_count_gd[e_line];
+    n_cap_gd += n_cap_count_gd[e_line];
+    
     electron_gd_e_hist->Fill(/*electron_ar_e[e_line]+*/electron_gd_e[e_line]);
     neutron_gd_e_hist->Fill(/*electron_ar_e[e_line]+neutron_ar_e[e_line]+*/electron_gd_e[e_line]+neutron_gd_e[e_line]);
     proton_gd_e_hist->Fill(/*electron_ar_e[e_line]+neutron_ar_e[e_line]+proton_ar_e[e_line]+*/electron_gd_e[e_line]+neutron_gd_e[e_line]+proton_gd_e[e_line]);
-    photon_gd_e_hist->Fill(/*electron_ar_e[e_line]+neutron_ar_e[e_line]+photon_ar_e[e_line]+photon_ar_e[e_line]+*/electron_gd_e[e_line]+neutron_gd_e[e_line]+photon_gd_e[e_line]+photon_gd_e[e_line]);
+    photon_gd_e_hist->Fill(/*electron_ar_e[e_line]+neutron_ar_e[e_line]+photon_ar_e[e_line]+photon_ar_e[e_line]+*/electron_gd_e[e_line]+neutron_gd_e[e_line]+proton_gd_e[e_line]+photon_gd_e[e_line]);
     
     if (!out.good()) break;
     if (!electron.good()) break;
@@ -487,24 +500,26 @@
     e_line++;
   }
 
+  std::cout<<"Neutron efficiency in gd: "<< n_cap_gd/n_tot_gd<< " , with " << n_cap_gd <<" neutrons captured, out of "<< n_tot_gd <<" total neutrons \n";
+  
   c9->cd();
-  neut_e_hist->Draw("PC*");
+  neut_e_hist->Draw("");
   neut_e_hist->SetMarkerColor(kBlue);
   neut_e_hist->SetLineColor(kBlue);
   neut_e_hist->GetXaxis()->SetTitle("Energy (MEv)");
   //rec_gd_e_hist->Draw("PC* SAME");
   rec_gd_e_hist->SetMarkerColor(kRed);
   rec_gd_e_hist->SetLineColor(kRed);
-  electron_gd_e_hist->Draw("PC* SAME");
+  electron_gd_e_hist->Draw("SAME");
   electron_gd_e_hist->SetMarkerColor(kGreen);
   electron_gd_e_hist->SetLineColor(kGreen);
-  neutron_gd_e_hist->Draw("PC* SAME");
+  neutron_gd_e_hist->Draw("SAME");
   neutron_gd_e_hist->SetMarkerColor(kYellow);
   neutron_gd_e_hist->SetLineColor(kYellow);
-  proton_gd_e_hist->Draw("PC* SAME");
+  proton_gd_e_hist->Draw("SAME");
   proton_gd_e_hist->SetMarkerColor(kCyan);
   proton_gd_e_hist->SetLineColor(kCyan);
-  photon_gd_e_hist->Draw("PC* SAME");
+  photon_gd_e_hist->Draw("SAME");
   photon_gd_e_hist->SetMarkerColor(kMagenta);
   photon_gd_e_hist->SetLineColor(kMagenta);
 
@@ -513,6 +528,7 @@
   neut_e_hist->SetTitle("Incoming neutrino energy vs energy in the TPC volume (liquid argon)");
   //neut_e_hist->SetTitle("Incoming neutrino energy vs energy deposited in the TPC volume (with plastic scintillator)");
   c9->SetTitle("Incoming neutrino energy vs energy deposited in the TPC volume (with plastic scintillator) ");
+
   
 }
 

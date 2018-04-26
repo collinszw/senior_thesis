@@ -135,8 +135,8 @@ void TrackingAction::PreUserTrackingAction(const G4Track* track)
 
 void TrackingAction::PostUserTrackingAction(const G4Track* track)
 {
-  G4double track_energy = track->GetKineticEnergy();
-  /*
+  /*G4double track_energy = track->GetKineticEnergy();
+  
   //Primary Particles only
   if (track->GetParentID() != 0) return;
 

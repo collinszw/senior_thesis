@@ -37,6 +37,8 @@
 #include "G4UserSteppingAction.hh"
 #include "globals.hh"
 
+#include <fstream>
+
 class DetectorConstruction;
 class EventAction;
 
@@ -59,6 +61,7 @@ private:
   G4int Parent_ID;
   G4int PDG_ID;
   G4int New_parent;
+  G4int neut_cap;
   
   DetectorConstruction* fDetector;  
   EventAction* fEventAction;    

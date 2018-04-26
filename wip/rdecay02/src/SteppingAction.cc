@@ -43,7 +43,7 @@
 #include "G4UnitsTable.hh"
 
 #include <iostream>
-                           
+
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 SteppingAction::SteppingAction(DetectorConstruction* det, EventAction* event)
@@ -81,19 +81,32 @@ void SteppingAction::UserSteppingAction(const G4Step* aStep)
   // count processes
   // 
   const G4StepPoint* endPoint = aStep->GetPostStepPoint();
+
+
+  //say something if the process is neutroncapture
   const G4VProcess* process   = endPoint->GetProcessDefinedStep();
+
+
+  
   run->CountProcesses(process, iVol);
 
   New_parent = 0;
   
   // particle being stepped
   //
-  // only change PDG_id if the we are talking about a new ParentID
+  // only change PDG_id if we are talking about a new ParentID
   Parent_ID = aStep->GetTrack()->GetParentID();
-
+  
   if(Parent_ID == 0){
-    PDG_ID = aStep->GetTrack()->GetParticleDefinition()->GetPDGEncoding();
     New_parent = 1;
+    
+  }
+  //only tracking what actually deposits energy
+  PDG_ID = aStep->GetTrack()->GetParticleDefinition()->GetPDGEncoding();
+
+  neut_cap = 0;
+  if(process->GetProcessName() == "nCapture" || process->GetProcessName() == "NeutronCaptureAtRest"){
+    neut_cap = 1;
   }
   
   // energy deposit
@@ -108,7 +121,7 @@ void SteppingAction::UserSteppingAction(const G4Step* aStep)
   }
   G4double time   = aStep->GetPreStepPoint()->GetGlobalTime();
   G4double weight = aStep->GetPreStepPoint()->GetWeight();   
-  fEventAction->AddEdep(iVol, edepStep, time, weight, PDG_ID, New_parent);
+  fEventAction->AddEdep(iVol, edepStep, time, weight, PDG_ID, New_parent, neut_cap);
     
   if (iVol == 1) {
     fEdep1 += edepStep;
@@ -128,3 +141,4 @@ void SteppingAction::UserSteppingAction(const G4Step* aStep)
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+
