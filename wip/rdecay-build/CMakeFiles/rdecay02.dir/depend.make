@@ -722,10 +722,16 @@ CMakeFiles/rdecay02.dir/src/DetectorConstruction.cc.o: /home/zcollins/geant/gean
 CMakeFiles/rdecay02.dir/src/DetectorConstruction.cc.o: /home/zcollins/geant/geant4.10.3-install/include/Geant4/G4AuxiliaryNavServices.icc
 CMakeFiles/rdecay02.dir/src/DetectorConstruction.cc.o: /home/zcollins/geant/geant4.10.3-install/include/Geant4/G4BlockingList.hh
 CMakeFiles/rdecay02.dir/src/DetectorConstruction.cc.o: /home/zcollins/geant/geant4.10.3-install/include/Geant4/G4BlockingList.icc
+CMakeFiles/rdecay02.dir/src/DetectorConstruction.cc.o: /home/zcollins/geant/geant4.10.3-install/include/Geant4/G4BooleanSolid.hh
+CMakeFiles/rdecay02.dir/src/DetectorConstruction.cc.o: /home/zcollins/geant/geant4.10.3-install/include/Geant4/G4BooleanSolid.icc
+CMakeFiles/rdecay02.dir/src/DetectorConstruction.cc.o: /home/zcollins/geant/geant4.10.3-install/include/Geant4/G4Box.hh
+CMakeFiles/rdecay02.dir/src/DetectorConstruction.cc.o: /home/zcollins/geant/geant4.10.3-install/include/Geant4/G4Box.icc
+CMakeFiles/rdecay02.dir/src/DetectorConstruction.cc.o: /home/zcollins/geant/geant4.10.3-install/include/Geant4/G4CSGSolid.hh
 CMakeFiles/rdecay02.dir/src/DetectorConstruction.cc.o: /home/zcollins/geant/geant4.10.3-install/include/Geant4/G4ClassificationOfNewTrack.hh
 CMakeFiles/rdecay02.dir/src/DetectorConstruction.cc.o: /home/zcollins/geant/geant4.10.3-install/include/Geant4/G4DCofThisEvent.hh
 CMakeFiles/rdecay02.dir/src/DetectorConstruction.cc.o: /home/zcollins/geant/geant4.10.3-install/include/Geant4/G4DataVector.hh
 CMakeFiles/rdecay02.dir/src/DetectorConstruction.cc.o: /home/zcollins/geant/geant4.10.3-install/include/Geant4/G4DataVector.icc
+CMakeFiles/rdecay02.dir/src/DetectorConstruction.cc.o: /home/zcollins/geant/geant4.10.3-install/include/Geant4/G4DisplacedSolid.hh
 CMakeFiles/rdecay02.dir/src/DetectorConstruction.cc.o: /home/zcollins/geant/geant4.10.3-install/include/Geant4/G4DynamicParticle.hh
 CMakeFiles/rdecay02.dir/src/DetectorConstruction.cc.o: /home/zcollins/geant/geant4.10.3-install/include/Geant4/G4DynamicParticle.icc
 CMakeFiles/rdecay02.dir/src/DetectorConstruction.cc.o: /home/zcollins/geant/geant4.10.3-install/include/Geant4/G4ElectronOccupancy.hh
@@ -843,6 +849,7 @@ CMakeFiles/rdecay02.dir/src/DetectorConstruction.cc.o: /home/zcollins/geant/gean
 CMakeFiles/rdecay02.dir/src/DetectorConstruction.cc.o: /home/zcollins/geant/geant4.10.3-install/include/Geant4/G4SteppingManager.hh
 CMakeFiles/rdecay02.dir/src/DetectorConstruction.cc.o: /home/zcollins/geant/geant4.10.3-install/include/Geant4/G4String.hh
 CMakeFiles/rdecay02.dir/src/DetectorConstruction.cc.o: /home/zcollins/geant/geant4.10.3-install/include/Geant4/G4String.icc
+CMakeFiles/rdecay02.dir/src/DetectorConstruction.cc.o: /home/zcollins/geant/geant4.10.3-install/include/Geant4/G4SubtractionSolid.hh
 CMakeFiles/rdecay02.dir/src/DetectorConstruction.cc.o: /home/zcollins/geant/geant4.10.3-install/include/Geant4/G4SystemOfUnits.hh
 CMakeFiles/rdecay02.dir/src/DetectorConstruction.cc.o: /home/zcollins/geant/geant4.10.3-install/include/Geant4/G4Threading.hh
 CMakeFiles/rdecay02.dir/src/DetectorConstruction.cc.o: /home/zcollins/geant/geant4.10.3-install/include/Geant4/G4ThreeVector.hh
@@ -862,6 +869,7 @@ CMakeFiles/rdecay02.dir/src/DetectorConstruction.cc.o: /home/zcollins/geant/gean
 CMakeFiles/rdecay02.dir/src/DetectorConstruction.cc.o: /home/zcollins/geant/geant4.10.3-install/include/Geant4/G4Transform3D.hh
 CMakeFiles/rdecay02.dir/src/DetectorConstruction.cc.o: /home/zcollins/geant/geant4.10.3-install/include/Geant4/G4TwoVector.hh
 CMakeFiles/rdecay02.dir/src/DetectorConstruction.cc.o: /home/zcollins/geant/geant4.10.3-install/include/Geant4/G4Types.hh
+CMakeFiles/rdecay02.dir/src/DetectorConstruction.cc.o: /home/zcollins/geant/geant4.10.3-install/include/Geant4/G4UBox.hh
 CMakeFiles/rdecay02.dir/src/DetectorConstruction.cc.o: /home/zcollins/geant/geant4.10.3-install/include/Geant4/G4UIcommand.hh
 CMakeFiles/rdecay02.dir/src/DetectorConstruction.cc.o: /home/zcollins/geant/geant4.10.3-install/include/Geant4/G4UIdirectory.hh
 CMakeFiles/rdecay02.dir/src/DetectorConstruction.cc.o: /home/zcollins/geant/geant4.10.3-install/include/Geant4/G4UImessenger.hh

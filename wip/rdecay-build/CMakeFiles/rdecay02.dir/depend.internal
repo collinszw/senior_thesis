@@ -723,10 +723,16 @@ CMakeFiles/rdecay02.dir/src/DetectorConstruction.cc.o
  /home/zcollins/geant/geant4.10.3-install/include/Geant4/G4AuxiliaryNavServices.icc
  /home/zcollins/geant/geant4.10.3-install/include/Geant4/G4BlockingList.hh
  /home/zcollins/geant/geant4.10.3-install/include/Geant4/G4BlockingList.icc
+ /home/zcollins/geant/geant4.10.3-install/include/Geant4/G4BooleanSolid.hh
+ /home/zcollins/geant/geant4.10.3-install/include/Geant4/G4BooleanSolid.icc
+ /home/zcollins/geant/geant4.10.3-install/include/Geant4/G4Box.hh
+ /home/zcollins/geant/geant4.10.3-install/include/Geant4/G4Box.icc
+ /home/zcollins/geant/geant4.10.3-install/include/Geant4/G4CSGSolid.hh
  /home/zcollins/geant/geant4.10.3-install/include/Geant4/G4ClassificationOfNewTrack.hh
  /home/zcollins/geant/geant4.10.3-install/include/Geant4/G4DCofThisEvent.hh
  /home/zcollins/geant/geant4.10.3-install/include/Geant4/G4DataVector.hh
  /home/zcollins/geant/geant4.10.3-install/include/Geant4/G4DataVector.icc
+ /home/zcollins/geant/geant4.10.3-install/include/Geant4/G4DisplacedSolid.hh
  /home/zcollins/geant/geant4.10.3-install/include/Geant4/G4DynamicParticle.hh
  /home/zcollins/geant/geant4.10.3-install/include/Geant4/G4DynamicParticle.icc
  /home/zcollins/geant/geant4.10.3-install/include/Geant4/G4ElectronOccupancy.hh
@@ -844,6 +850,7 @@ CMakeFiles/rdecay02.dir/src/DetectorConstruction.cc.o
  /home/zcollins/geant/geant4.10.3-install/include/Geant4/G4SteppingManager.hh
  /home/zcollins/geant/geant4.10.3-install/include/Geant4/G4String.hh
  /home/zcollins/geant/geant4.10.3-install/include/Geant4/G4String.icc
+ /home/zcollins/geant/geant4.10.3-install/include/Geant4/G4SubtractionSolid.hh
  /home/zcollins/geant/geant4.10.3-install/include/Geant4/G4SystemOfUnits.hh
  /home/zcollins/geant/geant4.10.3-install/include/Geant4/G4Threading.hh
  /home/zcollins/geant/geant4.10.3-install/include/Geant4/G4ThreeVector.hh
@@ -863,6 +870,7 @@ CMakeFiles/rdecay02.dir/src/DetectorConstruction.cc.o
  /home/zcollins/geant/geant4.10.3-install/include/Geant4/G4Transform3D.hh
  /home/zcollins/geant/geant4.10.3-install/include/Geant4/G4TwoVector.hh
  /home/zcollins/geant/geant4.10.3-install/include/Geant4/G4Types.hh
+ /home/zcollins/geant/geant4.10.3-install/include/Geant4/G4UBox.hh
  /home/zcollins/geant/geant4.10.3-install/include/Geant4/G4UIcommand.hh
  /home/zcollins/geant/geant4.10.3-install/include/Geant4/G4UIdirectory.hh
  /home/zcollins/geant/geant4.10.3-install/include/Geant4/G4UImessenger.hh

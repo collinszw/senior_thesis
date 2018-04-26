@@ -39,6 +39,8 @@
 #include "G4NistManager.hh"
 
 #include "G4Polyhedra.hh"
+#include "G4Box.hh"
+#include "G4SubtractionSolid.hh"
 #include "G4LogicalVolume.hh"
 #include "G4PVPlacement.hh"
 
@@ -127,7 +129,7 @@ void DetectorConstruction::DefineMaterials()
     
 
   fWorldMater = Air20;
-  fDetectorMater = Polystyrene_Gd; //needs to be  polystyrene + Gd
+  fDetectorMater = Air20; //Polystyrene_Gd; //needs to be  polystyrene + Gd
   fTargetMater = lAr;  
 
 }
@@ -158,6 +160,9 @@ G4VPhysicalVolume* DetectorConstruction::ConstructVolumes()
     rInner[i] = 0;
     rOuter[i] = fWorldRadius;
   }
+
+  //mini captain
+  /*
   G4Polyhedra* sWorld = new G4Polyhedra( "World",//const G4String& pName,
 					 0.,     //G4double        phiStart,
 					 twopi,  //G4double        phiTotal,
@@ -167,9 +172,11 @@ G4VPhysicalVolume* DetectorConstruction::ConstructVolumes()
 					 rInner, //const G4double  rInner[],
 					 rOuter);//const G4double  rOuter[] )
     
-    //G4Tubs*
-    //sWorld = new G4Tubs("World",                                 //name
-    //0.,fWorldRadius, 0.5*fWorldLength, 0.,twopi); //dimensions  
+  */
+  G4Box* sWorld = new G4Box("World", //name
+			      15.5*m,
+			      13*m,
+			      59*m);
                    
   G4LogicalVolume*
     lWorld = new G4LogicalVolume(sWorld,                  //shape
@@ -193,8 +200,10 @@ G4VPhysicalVolume* DetectorConstruction::ConstructVolumes()
     rInner[i] = 0;
     rOuter[i] = fTargetRadius;
   }
-  
-  G4Polyhedra* sTarget = new G4Polyhedra( "World",//const G4String& pName,
+
+  //mini captain
+  /*
+  G4Polyhedra* sTarget = new G4Polyhedra( "Target",//const G4String& pName,
 				     0.,     //G4double        phiStart,
 				     twopi,  //G4double        phiTotal,
 				     6,      //G4int           numSide,
@@ -202,10 +211,13 @@ G4VPhysicalVolume* DetectorConstruction::ConstructVolumes()
 				     zPlane, //const G4double  zPlane[],
 				     rInner, //const G4double  rInner[],
 				     rOuter);//const G4double  rOuter[] )
-  
-  //G4Tubs* 
-  //  sTarget = new G4Tubs("Target",                                   //name
-  //0., fTargetRadius, 0.5*fTargetLength, 0.,twopi); //dimensions
+  */
+
+  //DUNE
+  G4Box* sTarget = new G4Box("Target", //name
+			      14.5*m,
+			      12*m,
+			      58*m);
 
 
   fLogicTarget = new G4LogicalVolume(sTarget,           //shape
@@ -230,7 +242,9 @@ G4VPhysicalVolume* DetectorConstruction::ConstructVolumes()
     rOuter[i] = fTargetRadius+fDetectorThickness;
   }
     
-  G4Polyhedra* sDetector = new G4Polyhedra( "World",//const G4String& pName,
+  //mini captain
+  /*
+  G4Polyhedra* sDetector = new G4Polyhedra( "Detector",//const G4String& pName,
 				       0.,     //G4double        phiStart,
 				       twopi,  //G4double        phiTotal,
 				       6,      //G4int           numSide,
@@ -238,12 +252,11 @@ G4VPhysicalVolume* DetectorConstruction::ConstructVolumes()
 				       zPlane, //const G4double  zPlane[],
 				       rInner, //const G4double  rInner[],
 				       rOuter);//const G4double  rOuter[] )
-  
-  //G4Tubs* 
-  //sDetector = new G4Tubs("Detector",  
-  //fTargetRadius, fWorldRadius, 0.5*fDetectorLength, 0.,twopi);
+  */				       
 
-
+  //DUNE
+  G4SubtractionSolid *sDetector = new G4SubtractionSolid("Detector",sWorld,sTarget);
+ 
   fLogicDetector = new G4LogicalVolume(sDetector,       //shape
 				       fDetectorMater,            //material
 				       "Detector");               //name

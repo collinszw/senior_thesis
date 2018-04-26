@@ -121,11 +121,19 @@ void PrimaryGeneratorAction::GeneratePrimaries(G4Event* anEvent)
   if (G4UniformRand() < 0.5){
     z_dir = -1;
   }
-  
+
+  //mini captain
+  /*
   G4double x_pos = radius * std::sin(theta) * cm;
   G4double y_pos = radius * std::cos(theta) * cm;
   G4double z_pos = G4UniformRand() * z_dir * fid_len * cm;
+  */
 
+  //DUNE
+  G4double x_pos = G4UniformRand() * 14.5 * m;
+  G4double y_pos = G4UniformRand() * 12 * m;
+  G4double z_pos = G4UniformRand() * 58 * m;
+  
   //G4int origin = 0 * cm;
  
   //old way
