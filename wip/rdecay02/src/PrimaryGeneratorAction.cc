@@ -57,7 +57,7 @@ PrimaryGeneratorAction::PrimaryGeneratorAction(const std::string& config_file_na
   : G4VUserPrimaryGeneratorAction(),marley_generator_(nullptr) //fParticleGun(0)
 {
   //these are all initial energy spectrums, by event
-  /*
+  
   neut_file.close();
   e_file.close();
   n_file.close();
@@ -73,19 +73,19 @@ PrimaryGeneratorAction::PrimaryGeneratorAction(const std::string& config_file_na
 
   n_count_file.open ("neutron_count.txt");
   p_count_file.open ("proton_count.txt");
-  */
-
+  
+  /*
   //old way
   e_start_energy.close();
-  e_start_energy.open ("electron_starting_energy.txt");
+  e_start_energy.open ("photon_starting_energy.txt");
   
   G4int n_particle = 1;
   fParticleGun  = new G4ParticleGun(n_particle);
   k_energy = 0.5;
   event_count = 0;
-  
+  */
   //new way
-  /*
+  
   fPrimaryParticle = new G4PrimaryParticle();
   
   // Initialize the MARLEY logger
@@ -98,7 +98,7 @@ PrimaryGeneratorAction::PrimaryGeneratorAction(const std::string& config_file_na
   marley::RootJSONConfig config(json);
 
   marley_generator_= std::make_unique<marley::Generator>(config.create_generator() );
-  */
+  
   
 }
 
@@ -106,16 +106,17 @@ PrimaryGeneratorAction::PrimaryGeneratorAction(const std::string& config_file_na
 
 PrimaryGeneratorAction::~PrimaryGeneratorAction()
 {
+  /*
   delete fParticleGun;
   e_start_energy.close();
-  /*
+  */
   neut_file.close();
   e_file.close();
   n_file.close();
   p_file.close();
   y_file.close();
   delete fPrimaryParticle;
-  */
+  
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
@@ -123,7 +124,8 @@ PrimaryGeneratorAction::~PrimaryGeneratorAction()
 void PrimaryGeneratorAction::GeneratePrimaries(G4Event* anEvent)
 {
   //generate a random position within the target
-  /*
+  //mini captain
+  
   G4int fid_rad = 50;
   G4int fid_len = 16;
   //G4int particle_to_check = 22; //photons
@@ -135,24 +137,24 @@ void PrimaryGeneratorAction::GeneratePrimaries(G4Event* anEvent)
   if (G4UniformRand() < 0.5){
     z_dir = -1;
   }
-  */
-  //mini captain
-  /*
+  
   G4double x_pos = radius * std::sin(theta) * cm;
   G4double y_pos = radius * std::cos(theta) * cm;
   G4double z_pos = G4UniformRand() * z_dir * fid_len * cm;
-  */
+  
 
   //DUNE
+  /*
   G4double x_pos = G4UniformRand() * 14.5 * m;
   G4double y_pos = G4UniformRand() * 12 * m;
   G4double z_pos = G4UniformRand() * 58 * m;
+  */
   
-  //G4int origin = 0 * cm;
  
   //old
+  /*
   event_count++;
-  if(event_count % 10 == 0){ //10,000 events per energy, max e == 55.5
+  if(event_count % 100000 == 0){ //10,000 events per energy, max e == 55.5
     k_energy +=1;
   }
 
@@ -175,7 +177,7 @@ void PrimaryGeneratorAction::GeneratePrimaries(G4Event* anEvent)
     y_dir *= -1;
   }
 
-  G4double z_dir = 1;
+  z_dir = 1;
   G4double z_mag = G4UniformRand();
 
   if(G4UniformRand() >= 0.5){
@@ -190,7 +192,7 @@ void PrimaryGeneratorAction::GeneratePrimaries(G4Event* anEvent)
 
   e_start_energy << sqrt(pow(x_mom,2) + pow(y_mom,2) + pow(z_mom,2)) << "\n";
   
-  G4int PDG_code = 22; //electrons
+  G4int PDG_code = 22; //electrons = 11; photons = 22
   G4ParticleTable* particleTable = G4ParticleTable::GetParticleTable();
   G4ParticleDefinition* particle = particleTable->FindParticle(PDG_code);
   fParticleGun->SetParticleDefinition(particle);
@@ -202,8 +204,9 @@ void PrimaryGeneratorAction::GeneratePrimaries(G4Event* anEvent)
   //create vertex
   fParticleGun->GeneratePrimaryVertex(anEvent);
 
+  */
   //new way
-  /*
+  
   vertex = new G4PrimaryVertex(x_pos, y_pos, z_pos, 0); // x,y,z,t0
 
   marley::Event ev = marley_generator_->create_event();
@@ -261,7 +264,7 @@ void PrimaryGeneratorAction::GeneratePrimaries(G4Event* anEvent)
   ind_y_file<<"\n"; //energy spectrum of the photon
   n_count_file<<n_count<<"\n"; //number of neutrons per event
   p_count_file<<n_count<<"\n"; //number of neutrons per event
-  */
+  
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......

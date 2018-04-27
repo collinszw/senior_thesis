@@ -1,0 +1,34 @@
+{
+  gROOT->Reset();
+  TCanvas *c1 = new TCanvas();
+
+  ifstream start;
+  start.open("electron_starting_energy.txt",std::fstream::in);
+  
+  ifstream dep;
+  dep.open("electron_deposited_energy.txt",std::fstream::in);
+    
+  TH2F *electron_efficiency_hist = new TH2F("electron_efficiency_hist","Electron efficiency", 56, 0, 56, 56, 0, 56);
+
+  Int_t e_line = 0;
+  Double_t e_start[6000000], e_dep[6000000];
+
+    
+  while (1){
+    
+    start >> e_start[e_line];
+    dep >> e_dep[e_line];
+ 
+    electron_efficiency_hist->Fill(e_start[e_line],e_dep[e_line]);
+
+    if (!start.good()) break;
+    if (!dep.good()) break;
+    e_line++;
+  }
+  
+  c1->cd();
+  electron_efficiency_hist->Draw("COLZ");
+  electron_efficiency_hist->SetTitle("Electron efficiency");
+  electron_efficiency_hist->GetYaxis()->SetTitle("Deposited energy (MeV)");
+  electron_efficiency_hist->GetXaxis()->SetTitle("Initial energy (MeV)");
+}
