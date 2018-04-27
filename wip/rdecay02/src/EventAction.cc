@@ -60,6 +60,8 @@ std::ofstream gd_proton_file;
 std::ofstream gd_photon_file;
 std::ofstream gd_ind_photon_file;
 std::ofstream gd_neutron_cap_file;
+
+std::ofstream e_deposited_energy;
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 EventAction::EventAction()
@@ -88,6 +90,8 @@ EventAction::EventAction()
   //leaving this for posterity
   //std::ofstream blorfile;
   //blorfile.open("BLOOOORRRR.txt");
+
+  e_deposited_energy.open ("electron_deposited_energy.txt");
   
 } 
 
@@ -200,8 +204,11 @@ void EventAction::EndOfEventAction(const G4Event* Event)
   // pulse height in target
   //
 
+  e_deposited_energy << fEdep1 << "\n";
+  
   if (fEdep1 > 0.) {
     fWeight1 /= fEdep1;
+    
     //analysisManager->FillH1(0, fEdep1, fWeight1);   
     //old way of collecting event energy
     /*for(G4int i = 0;i<Event->GetPrimaryVertex()->GetNumberOfParticle();i++){

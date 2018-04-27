@@ -85,15 +85,16 @@ void RunAction::BeginOfRunAction(const G4Run*)
   if ( analysisManager->IsActive() ) {
     analysisManager->OpenFile();
   } 
-  
+
+  //put this back 
   // keep run condition
-  G4double energy;
+  /*G4double energy;
   if (fPrimary) {
     const G4ParticleDefinition* particle;
     particle = fPrimary->GetPrimaryParticle()->GetParticleDefinition();
     energy = fPrimary->GetPrimaryParticle()->GetKineticEnergy();
     fRun->SetPrimary((G4ParticleDefinition*) particle, energy); 
-  }
+  }*/
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......

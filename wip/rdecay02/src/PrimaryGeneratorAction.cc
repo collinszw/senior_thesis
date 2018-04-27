@@ -57,7 +57,7 @@ PrimaryGeneratorAction::PrimaryGeneratorAction(const std::string& config_file_na
   : G4VUserPrimaryGeneratorAction(),marley_generator_(nullptr) //fParticleGun(0)
 {
   //these are all initial energy spectrums, by event
-
+  /*
   neut_file.close();
   e_file.close();
   n_file.close();
@@ -73,9 +73,19 @@ PrimaryGeneratorAction::PrimaryGeneratorAction(const std::string& config_file_na
 
   n_count_file.open ("neutron_count.txt");
   p_count_file.open ("proton_count.txt");
+  */
 
-
+  //old way
+  e_start_energy.close();
+  e_start_energy.open ("electron_starting_energy.txt");
+  
+  G4int n_particle = 1;
+  fParticleGun  = new G4ParticleGun(n_particle);
+  k_energy = 0.5;
+  event_count = 0;
+  
   //new way
+  /*
   fPrimaryParticle = new G4PrimaryParticle();
   
   // Initialize the MARLEY logger
@@ -88,7 +98,7 @@ PrimaryGeneratorAction::PrimaryGeneratorAction(const std::string& config_file_na
   marley::RootJSONConfig config(json);
 
   marley_generator_= std::make_unique<marley::Generator>(config.create_generator() );
-
+  */
   
 }
 
@@ -96,12 +106,16 @@ PrimaryGeneratorAction::PrimaryGeneratorAction(const std::string& config_file_na
 
 PrimaryGeneratorAction::~PrimaryGeneratorAction()
 {
+  delete fParticleGun;
+  e_start_energy.close();
+  /*
   neut_file.close();
   e_file.close();
   n_file.close();
   p_file.close();
   y_file.close();
   delete fPrimaryParticle;
+  */
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
@@ -109,7 +123,7 @@ PrimaryGeneratorAction::~PrimaryGeneratorAction()
 void PrimaryGeneratorAction::GeneratePrimaries(G4Event* anEvent)
 {
   //generate a random position within the target
-
+  /*
   G4int fid_rad = 50;
   G4int fid_len = 16;
   //G4int particle_to_check = 22; //photons
@@ -121,7 +135,7 @@ void PrimaryGeneratorAction::GeneratePrimaries(G4Event* anEvent)
   if (G4UniformRand() < 0.5){
     z_dir = -1;
   }
-
+  */
   //mini captain
   /*
   G4double x_pos = radius * std::sin(theta) * cm;
@@ -136,12 +150,60 @@ void PrimaryGeneratorAction::GeneratePrimaries(G4Event* anEvent)
   
   //G4int origin = 0 * cm;
  
-  //old way
-  //fParticleGun->SetParticlePosition(G4ThreeVector(x_pos,y_pos,z_pos));
+  //old
+  event_count++;
+  if(event_count % 10 == 0){ //10,000 events per energy, max e == 55.5
+    k_energy +=1;
+  }
+
+  
+  
+  
+  G4double norm_const = 0;
+  
+  G4double x_dir = 1;
+  G4double x_mag = G4UniformRand();
+
+  if(G4UniformRand() >= 0.5){
+    x_dir *= -1;
+  }
+
+  G4double y_dir = 1;
+  G4double y_mag = G4UniformRand();
+
+  if(G4UniformRand() >= 0.5){
+    y_dir *= -1;
+  }
+
+  G4double z_dir = 1;
+  G4double z_mag = G4UniformRand();
+
+  if(G4UniformRand() >= 0.5){
+    z_dir *= -1;
+  }
+
+  norm_const = 1/(sqrt(pow(x_mag,2)+pow(y_mag,2)+pow(z_mag,2)));
+
+  G4double x_mom = x_dir * x_mag * norm_const * k_energy;
+  G4double y_mom = y_dir * y_mag * norm_const * k_energy;
+  G4double z_mom = z_dir * z_mag * norm_const * k_energy;
+
+  e_start_energy << sqrt(pow(x_mom,2) + pow(y_mom,2) + pow(z_mom,2)) << "\n";
+  
+  G4int PDG_code = 22; //electrons
+  G4ParticleTable* particleTable = G4ParticleTable::GetParticleTable();
+  G4ParticleDefinition* particle = particleTable->FindParticle(PDG_code);
+  fParticleGun->SetParticleDefinition(particle);
+
+  fParticleGun->SetParticleEnergy(sqrt(pow(x_mom,2) + pow(y_mom,2) + pow(z_mom,2)));
+  fParticleGun->SetParticleMomentumDirection(G4ThreeVector(x_mom,y_mom,z_mom));
+  
+  fParticleGun->SetParticlePosition(G4ThreeVector(x_pos,y_pos,z_pos));
   //create vertex
-  //fParticleGun->GeneratePrimaryVertex(anEvent);
+  fParticleGun->GeneratePrimaryVertex(anEvent);
 
   //new way
+  /*
   vertex = new G4PrimaryVertex(x_pos, y_pos, z_pos, 0); // x,y,z,t0
 
   marley::Event ev = marley_generator_->create_event();
@@ -199,6 +261,7 @@ void PrimaryGeneratorAction::GeneratePrimaries(G4Event* anEvent)
   ind_y_file<<"\n"; //energy spectrum of the photon
   n_count_file<<n_count<<"\n"; //number of neutrons per event
   p_count_file<<n_count<<"\n"; //number of neutrons per event
+  */
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......

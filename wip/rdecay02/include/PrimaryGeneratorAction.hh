@@ -80,6 +80,13 @@ public:
   G4PrimaryParticle* GetPrimaryParticle() {return fPrimaryParticle;};
   
 private:
+  G4double k_energy;
+  G4ParticleGun*  fParticleGun;        //pointer a to G4 service class
+  G4int event_count;
+  std::ofstream e_start_energy; //just electrons tonight
+  //std::ofstream y_start_energy;
+  //std::ofstream n_start_energy;
+  
   std::ofstream neut_file;
   std::ofstream e_file;
   std::ofstream n_file;
