@@ -53,7 +53,7 @@ public:
   virtual void BeginOfEventAction(const G4Event*);
   virtual void   EndOfEventAction(const G4Event* Event);
     
-  void AddEdep (G4int iVol, G4double Edep, G4double time, G4double weight, G4int PDG, G4int parent, G4int neutron_capture);
+  void AddEdep (G4int iVol, G4double Edep, G4double time, G4double weight, G4int PDG, G4int parent);
                 
 private:
 

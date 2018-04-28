@@ -44,6 +44,7 @@
 
 #include <fstream>
 
+
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 Run::Run(DetectorConstruction* det)
@@ -296,6 +297,14 @@ void Run::EndOfRun()
          << G4BestUnit(rmsEdep,    "Energy")
          << G4endl;
 
+
+  std::ofstream ar_neutron_cap_file;
+  std::ofstream gd_neutron_cap_file;
+
+  
+  ar_neutron_cap_file.open ("neutron_capture_ar.txt");
+  gd_neutron_cap_file.open ("neutron_capture_gd.txt");
+
   // frequency of processes in target
   //
   G4cout << "\n Process calls frequency in target :" << G4endl;
@@ -304,6 +313,7 @@ void Run::EndOfRun()
   for (it1 = fProcCounter1.begin(); it1 != fProcCounter1.end(); it1++) {
      G4String procName = it1->first;
      G4int    count    = it1->second;
+     if (procName == "nCapture") ar_neutron_cap_file << count << "\n";
      G4String space = " "; if (++index%3 == 0) space = "\n";
      G4cout << " " << std::setw(20) << procName << "="<< std::setw(7) << count
             << space;
@@ -318,6 +328,7 @@ void Run::EndOfRun()
   for (it2 = fProcCounter2.begin(); it2 != fProcCounter2.end(); it2++) {
      G4String procName = it2->first;
      G4int    count    = it2->second;
+     if (procName == "nCapture") gd_neutron_cap_file << count << "\n";
      G4String space = " "; if (++index%3 == 0) space = "\n";
      G4cout << " " << std::setw(20) << procName << "="<< std::setw(7) << count
             << space;

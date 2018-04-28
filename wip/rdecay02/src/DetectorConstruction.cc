@@ -66,7 +66,7 @@ DetectorConstruction::DetectorConstruction()
   fTargetLength      = 32*cm; //target is argon
   fTargetRadius      = 50*cm;
   fDetectorLength    = 32*cm; //detector is doped plastic 
-  fDetectorThickness = 2*cm;
+  fDetectorThickness = 8*cm;
   
   fWorldLength = std::max(fTargetLength,fDetectorLength);
   fWorldRadius = fTargetRadius + fDetectorThickness;
@@ -124,8 +124,8 @@ void DetectorConstruction::DefineMaterials()
 
   density = 1.238*g/cm3;
   G4Material* Polystyrene_Gd = new G4Material("Gadolinium doped polystyrene", density, ncomponents=2, kStateSolid, 293.*kelvin, 1.*atmosphere);
-  Polystyrene_Gd->AddMaterial(Polystyrene, fractionmass=0.01); //used to be .97
-  Polystyrene_Gd->AddElement(Gd, fractionmass=0.99); //used to be .3
+  Polystyrene_Gd->AddMaterial(Polystyrene, fractionmass=0.97); //used to be .97
+  Polystyrene_Gd->AddElement(Gd, fractionmass=0.03); //used to be .03
     
 
   fWorldMater = Air20;

@@ -49,7 +49,7 @@ std::ofstream ar_neutron_file;
 std::ofstream ar_proton_file;
 std::ofstream ar_photon_file;
 std::ofstream ar_ind_photon_file;
-std::ofstream ar_neutron_cap_file;
+
 
 std::ofstream ar_extra_file;
 
@@ -59,7 +59,7 @@ std::ofstream gd_neutron_file;
 std::ofstream gd_proton_file;
 std::ofstream gd_photon_file;
 std::ofstream gd_ind_photon_file;
-std::ofstream gd_neutron_cap_file;
+
 
 std::ofstream e_deposited_energy;
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
@@ -75,7 +75,7 @@ EventAction::EventAction()
   ar_proton_file.open ("proton_ar_energy_spectrum.txt");
   ar_photon_file.open ("photon_ar_energy_spectrum.txt");
   ar_ind_photon_file.open ("individual_photon_ar_energy_spectrum.txt");
-  ar_neutron_cap_file.open ("neutron_capture_ar.txt");
+  
 
   ar_extra_file.open ("extra_ar_energy_spectrum.txt");
   
@@ -85,7 +85,7 @@ EventAction::EventAction()
   gd_proton_file.open ("proton_gd_energy_spectrum.txt");
   gd_photon_file.open ("photon_gd_energy_spectrum.txt");
   gd_ind_photon_file.open ("individual_photon_gd_energy_spectrum.txt");
-  gd_neutron_cap_file.open ("neutron_capture_gd.txt");
+  
 
   //leaving this for posterity
   //std::ofstream blorfile;
@@ -115,7 +115,7 @@ void EventAction::BeginOfEventAction(const G4Event*)
   proton_e_ar = 0;
   photon_e_ar = 0;
   ind_photon_e_ar = 0;
-  neut_cap_ar = 0;
+  
 
   extra_e_ar = 0;
   
@@ -125,13 +125,13 @@ void EventAction::BeginOfEventAction(const G4Event*)
   proton_e_gd = 0;
   photon_e_gd = 0;
   ind_photon_e_gd = 0; 
-  neut_cap_gd = 0;
+  
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 void EventAction::AddEdep(G4int iVol, G4double edep,
-			  G4double time, G4double weight, G4int PDG, G4int parent, G4int neutron_capture)
+			  G4double time, G4double weight, G4int PDG, G4int parent)
 {
   // initialize t0
   if (fTime0 < 0.) fTime0 = time;
@@ -143,9 +143,6 @@ void EventAction::AddEdep(G4int iVol, G4double edep,
   if (iVol == 1) {
     fEdep1 += edep;
     fWeight1 += edep*weight;
-    if (neutron_capture == 1){
-      neut_cap_ar++;
-    }
     if (PDG == 11){ //electron
       electron_e_ar+=edep;
       total_e_ar+=edep;
@@ -168,9 +165,6 @@ void EventAction::AddEdep(G4int iVol, G4double edep,
   if (iVol == 2) {
     fEdep2 += edep;
     fWeight2 += edep*weight;
-    if (neutron_capture == 1){
-      neut_cap_gd++;
-    }
     if (PDG == 11){ //electron
       electron_e_gd+=edep;
       total_e_gd+=edep;
@@ -244,9 +238,8 @@ void EventAction::EndOfEventAction(const G4Event* Event)
   ar_photon_file<<photon_e_ar<<"\n"; //energy spectrum of the photon
   ar_ind_photon_file<<"\n"; //energy spectrum of the photon
 
-  ar_neutron_cap_file<<neut_cap_ar<<"\n"; //energy spectrum of the neutrino
   ar_extra_file<<extra_e_ar<<"\n";
- 
+    
   gd_out_file<<total_e_gd<<"\n"; //energy spectrum of the neutrino
   gd_electron_file<<electron_e_gd<<"\n"; //energy spectrum of the electron
   gd_neutron_file<<neutron_e_gd<<"\n"; //energy spectrum of the neutron
@@ -254,8 +247,7 @@ void EventAction::EndOfEventAction(const G4Event* Event)
   gd_photon_file<<photon_e_gd<<"\n"; //energy spectrum of the photon
   ar_ind_photon_file<<"\n"; //energy spectrum of the photon
 
-  gd_neutron_cap_file<<neut_cap_gd<<"\n"; //energy spectrum of the neutrino
-  
+    
   // total
   //
   analysisManager->FillH1(2, Etot, Wtot);

@@ -14,5 +14,5 @@
 #
 /analysis/h1/set 0 100 0. 13. MeV 
 #
-/run/beamOn 10000
+/run/beamOn 1000000
 

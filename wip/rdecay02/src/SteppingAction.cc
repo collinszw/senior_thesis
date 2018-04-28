@@ -85,8 +85,6 @@ void SteppingAction::UserSteppingAction(const G4Step* aStep)
 
   //say something if the process is neutroncapture
   const G4VProcess* process   = endPoint->GetProcessDefinedStep();
-
-
   
   run->CountProcesses(process, iVol);
 
@@ -104,10 +102,6 @@ void SteppingAction::UserSteppingAction(const G4Step* aStep)
   //only tracking what actually deposits energy
   PDG_ID = aStep->GetTrack()->GetParticleDefinition()->GetPDGEncoding();
 
-  neut_cap = 0;
-  if(process->GetProcessName() == "nCapture" || process->GetProcessName() == "NeutronCaptureAtRest"){
-    neut_cap = 1;
-  }
   
   // energy deposit
   //
@@ -121,7 +115,7 @@ void SteppingAction::UserSteppingAction(const G4Step* aStep)
   }
   G4double time   = aStep->GetPreStepPoint()->GetGlobalTime();
   G4double weight = aStep->GetPreStepPoint()->GetWeight();   
-  fEventAction->AddEdep(iVol, edepStep, time, weight, PDG_ID, New_parent, neut_cap);
+  fEventAction->AddEdep(iVol, edepStep, time, weight, PDG_ID, New_parent);
     
   if (iVol == 1) {
     fEdep1 += edepStep;

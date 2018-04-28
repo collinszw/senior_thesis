@@ -70,8 +70,8 @@
     // source for energies: https://arxiv.org/pdf/1704.08906.pdf
     n_count >> neutron_count[e_line];
     n_tot_ar+= neutron_count[e_line];
-    n_cap >> n_cap_count_ar[e_line];
-    n_cap_ar += n_cap_count_ar[e_line];
+    
+    
     /*if(neutron_count[e_line] == 1){
       neutron_count[e_line] = 7.62; //now it's energy
     }else if(neutron_count[e_line] == 2){
@@ -104,7 +104,8 @@
     if (!photon.good()) break;
     e_line++;
   }
-
+  
+  n_cap >> n_cap_ar;
   
   std::cout<<"Neutron efficiency in ar: "<< n_cap_ar/n_tot_ar<< " , with " << n_cap_ar <<" neutrons captured, out of "<< n_tot_ar <<" total neutrons \n";
   
@@ -172,9 +173,7 @@
 
     n_count >> neutron_count[e_line];
     n_tot_gd+= neutron_count[e_line];
-    n_cap >> n_cap_count_gd[e_line];
-    n_cap_gd += n_cap_count_gd[e_line];
-    
+        
     electron_gd_e_hist->Fill(electron_ar_e[e_line]+electron_gd_e[e_line]);
     neutron_gd_e_hist->Fill(electron_ar_e[e_line]+neutron_ar_e[e_line]+electron_gd_e[e_line]+neutron_gd_e[e_line]);
     proton_gd_e_hist->Fill(electron_ar_e[e_line]+neutron_ar_e[e_line]+proton_ar_e[e_line]+electron_gd_e[e_line]+neutron_gd_e[e_line]+proton_gd_e[e_line]);
@@ -188,6 +187,8 @@
     e_line++;
   }
 
+  n_cap >> n_cap_gd;
+  
   std::cout<<"Neutron efficiency in gd: "<< (n_cap_ar + n_cap_gd)/n_tot_gd<< " , with " << n_cap_gd+n_cap_ar <<" neutrons captured, out of "<< n_tot_gd <<" total neutrons \n";
   
   c9->cd();
