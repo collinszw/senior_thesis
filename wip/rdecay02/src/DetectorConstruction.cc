@@ -66,7 +66,7 @@ DetectorConstruction::DetectorConstruction()
   fTargetLength      = 32*cm; //target is argon
   fTargetRadius      = 50*cm;
   fDetectorLength    = 32*cm; //detector is doped plastic 
-  fDetectorThickness = 16*cm;
+  fDetectorThickness = 14*cm;
   
   fWorldLength = std::max(fTargetLength,fDetectorLength);
   fWorldRadius = fTargetRadius + fDetectorThickness;
@@ -129,7 +129,7 @@ void DetectorConstruction::DefineMaterials()
     
 
   fWorldMater = Air20;
-  fDetectorMater = Air20; //Polystyrene_Gd; //needs to be  polystyrene + Gd
+  fDetectorMater = Air20;//Polystyrene_Gd; //needs to be  polystyrene + Gd
   fTargetMater = lAr;  
 
 }
@@ -162,7 +162,7 @@ G4VPhysicalVolume* DetectorConstruction::ConstructVolumes()
   }
 
   //mini captain
-  
+  /*
   G4Polyhedra* sWorld = new G4Polyhedra( "World",//const G4String& pName,
 					 0.,     //G4double        phiStart,
 					 twopi,  //G4double        phiTotal,
@@ -172,14 +172,14 @@ G4VPhysicalVolume* DetectorConstruction::ConstructVolumes()
 					 rInner, //const G4double  rInner[],
 					 rOuter);//const G4double  rOuter[] )
   
-  
+  */
   //DUNE
-  /*
+  
   G4Box* sWorld = new G4Box("World", //name
 			    15.5*m,
 			    13*m,
 			    59*m);
-  */                 
+                   
   G4LogicalVolume*
     lWorld = new G4LogicalVolume(sWorld,                  //shape
 				 fWorldMater,               //material
@@ -204,7 +204,7 @@ G4VPhysicalVolume* DetectorConstruction::ConstructVolumes()
   }
 
   //mini captain
-  
+  /*
   G4Polyhedra* sTarget = new G4Polyhedra( "Target",//const G4String& pName,
 					  0.,     //G4double        phiStart,
 					  twopi,  //G4double        phiTotal,
@@ -214,14 +214,14 @@ G4VPhysicalVolume* DetectorConstruction::ConstructVolumes()
 					  rInner, //const G4double  rInner[],
 					  rOuter);//const G4double  rOuter[] )
   
-
+  */
   //DUNE
-  /*
+  
   G4Box* sTarget = new G4Box("Target", //name
 			      14.5*m,
 			      12*m,
 			      58*m);
-  */
+  
 
   fLogicTarget = new G4LogicalVolume(sTarget,           //shape
 				     fTargetMater,              //material
@@ -246,7 +246,7 @@ G4VPhysicalVolume* DetectorConstruction::ConstructVolumes()
   }
     
   //mini captain
-  
+  /*
   G4Polyhedra* sDetector = new G4Polyhedra( "Detector",//const G4String& pName,
 					    0.,     //G4double        phiStart,
 					    twopi,  //G4double        phiTotal,
@@ -256,9 +256,9 @@ G4VPhysicalVolume* DetectorConstruction::ConstructVolumes()
 					    rInner, //const G4double  rInner[],
 					    rOuter);//const G4double  rOuter[] )
   				       
-
+  */
   //DUNE
-  //G4SubtractionSolid *sDetector = new G4SubtractionSolid("Detector",sWorld,sTarget);
+  G4SubtractionSolid *sDetector = new G4SubtractionSolid("Detector",sWorld,sTarget);
  
   fLogicDetector = new G4LogicalVolume(sDetector,       //shape
 				       fDetectorMater,            //material
