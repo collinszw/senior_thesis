@@ -42,6 +42,7 @@
 
 #include "G4HadronElasticPhysicsHP.hh"
 #include "G4HadronPhysicsFTFP_BERT_HP.hh"
+#include "G4HadronPhysicsQGSP_BERT_HP.hh"
 #include "G4HadronPhysicsQGSP_BIC_HP.hh"
 #include "G4HadronInelasticQBBC.hh"
 #include "G4HadronPhysicsINCLXX.hh"
@@ -94,6 +95,7 @@ PhysicsList::PhysicsList()
   RegisterPhysics( new G4HadronElasticPhysicsHP(verb) );
   
   // Hadron Inelastic physics
+  ////RegisterPhysics( new G4HadronPhysicsQGSP_BERT_HP(verb));
   ////RegisterPhysics( new G4HadronPhysicsFTFP_BERT_HP(verb));
   RegisterPhysics( new G4HadronPhysicsQGSP_BIC_HP(verb));
   ////RegisterPhysics( new G4HadronInelasticQBBC(verb));        

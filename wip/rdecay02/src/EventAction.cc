@@ -91,7 +91,7 @@ EventAction::EventAction()
   //std::ofstream blorfile;
   //blorfile.open("BLOOOORRRR.txt");
 
-  e_deposited_energy.open ("photon_deposited_energy.txt");
+  e_deposited_energy.open ("electron_deposited_energy.txt");
   
 } 
 

@@ -88,13 +88,14 @@ void RunAction::BeginOfRunAction(const G4Run*)
 
   //put this back 
   // keep run condition
+  /*
   G4double energy;
   if (fPrimary) {
     const G4ParticleDefinition* particle;
     particle = fPrimary->GetPrimaryParticle()->GetParticleDefinition();
     energy = fPrimary->GetPrimaryParticle()->GetKineticEnergy();
     fRun->SetPrimary((G4ParticleDefinition*) particle, energy); 
-  }
+  }*/
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
