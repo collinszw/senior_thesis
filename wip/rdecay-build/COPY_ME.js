@@ -12,8 +12,8 @@
 
     // Neutrino source specification
     source: {
-	//type: "dar",        // Source spectrum (dar == stopped muon)
-	type: "fd",           // Source spectrum (fd == supernova)
+	type: "dar",        // Source spectrum (dar == stopped muon)
+	//type: "fd",           // Source spectrum (fd == supernova)
 	neutrino: "ve",       // The source produces electron neutrinos
 	Emin: 0,              // Minimum neutrino energy (MeV)
 	Emax: 60,             // Maximum neutrino energy (MeV)

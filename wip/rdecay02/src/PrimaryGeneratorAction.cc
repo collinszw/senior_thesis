@@ -125,7 +125,7 @@ void PrimaryGeneratorAction::GeneratePrimaries(G4Event* anEvent)
 {
   //generate a random position within the target
   //mini captain
-  /*
+  
   G4int fid_rad = 50;
   G4int fid_len = 16;
   //G4int particle_to_check = 22; //photons
@@ -142,7 +142,7 @@ void PrimaryGeneratorAction::GeneratePrimaries(G4Event* anEvent)
   G4double y_pos = radius * std::cos(theta) * cm;
   G4double z_pos = G4UniformRand() * z_dir * fid_len * cm;
 
-  */
+  /*
 
   //DUNE
   
@@ -150,7 +150,7 @@ void PrimaryGeneratorAction::GeneratePrimaries(G4Event* anEvent)
   G4double y_pos = G4UniformRand() * 12 * m;
   G4double z_pos = G4UniformRand() * 58 * m;
   
-   
+  */ 
   //old
   /*
   event_count++;
